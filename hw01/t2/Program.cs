@@ -21,7 +21,8 @@
 
         private static void Solution()
         {
-            string first9Digits = Console.ReadLine();
+            Console.WriteLine("Enter first 9 digits of ISBN-10 code");
+            string first9Digits = Console.ReadLine()!;
             Console.WriteLine(CreateISBN(first9Digits));
         }
 
