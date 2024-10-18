@@ -4,15 +4,22 @@ namespace t1
 {
     internal class Program
     {
+
         private static void ListAADigits(int a, int b)
         {
-            if (b < 130)
-                return;
+            if (a > b)
+            {
+                int tmp = a;
+                a = b;
+                b = tmp;
+            }
+
+            
 
             StringBuilder stringBuilder = new StringBuilder();
             for (int i = a; i <= b; i++)
             {
-                int decimalNumber = i;
+                int decimalNumber = Math.Abs(i);
                 int aCounter = 0;
                 while (decimalNumber > 0)
                 {
@@ -33,8 +40,11 @@ namespace t1
                     }
                 }
 
+                if (i < 0)
+                    stringBuilder.Insert(0, "-");   
+
                 if (aCounter == 2)
-                    Console.WriteLine(stringBuilder.ToString());
+                    Console.WriteLine(i);
 
                 stringBuilder.Clear();
             }
