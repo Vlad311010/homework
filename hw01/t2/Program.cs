@@ -13,7 +13,9 @@
 
             int remainder = checkSum % 11;
             int checkDigit = 11 - remainder;
-            if (checkDigit == 10)
+            if (checkDigit == 11)
+                return digits + "0";
+            else if (checkDigit == 10)
                 return digits + "X";
             else
                 return digits + checkDigit;
