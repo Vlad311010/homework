@@ -6,9 +6,9 @@ namespace t2
 
     public class DiagonalMatrix
     {
-        public int Size => elements.Length;
+        public int Size => _elements.Length;
 
-        private int[] elements;
+        private int[] _elements;
 
         public DiagonalMatrix(params int[] elements)
         {
@@ -18,33 +18,34 @@ namespace t2
                 return;
             }
 
-            this.elements = elements;
+            this._elements = new int[elements.Length];
+            Array.Copy(elements, this._elements, elements.Length);
         }
 
         public int this[int i, int j]
         {
             get 
             {
-                if (i != j || i < 0 || i >= elements.Length)
-                    return 0;
-                else 
-                    return elements[i];
+                return IsIndexValid(i, j) ? _elements[i] : 0;
             }
             set
             {
-                if (i != j || i < 0 || i >= elements.Length)
-                    return;
-                else
-                    elements[i] = value;
+                if (IsIndexValid(i, j))
+                    _elements[i] = value;
             }
+        }
+
+        private bool IsIndexValid(int i, int j)
+        {
+            return i == j && i >= 0 && i < _elements.Length;
         }
 
         public int Track()
         {
             int acc = 0;
-            for (int i = 0; i < elements.Length; i++)
+            for (int i = 0; i < _elements.Length; i++)
             {
-                acc += elements[i];
+                acc += _elements[i];
             }
             return acc;
         }
@@ -52,12 +53,12 @@ namespace t2
         public override string ToString() 
         { 
             StringBuilder sb = new StringBuilder();
-            for (int i = 0; i < elements.Length; i++)
+            for (int i = 0; i < _elements.Length; i++)
             {
                 sb.Append("[");
                 sb.Append(string.Concat(Enumerable.Repeat("0, ", i)));
-                sb.Append(elements[i].ToString());
-                sb.Append(string.Concat(Enumerable.Repeat(", 0", elements.Length - 1 - i)));
+                sb.Append(_elements[i].ToString());
+                sb.Append(string.Concat(Enumerable.Repeat(", 0", _elements.Length - 1 - i)));
                 sb.Append("]\n");
             }
             return sb.ToString();
@@ -71,7 +72,7 @@ namespace t2
             
             for (int i = 0; i < this.Size; i++)
             {
-                if (other[i, i] != this[i, i])
+                if (this._elements[i] != other._elements[i])
                     return false;
             }
 
@@ -105,7 +106,9 @@ namespace t2
             var a = new DiagonalMatrix(1, 2);
             var b = new DiagonalMatrix(0, 0, 0, 6);
 
-            
+            a[0, 0] = 2;
+            a[0, 1] = 2;
+
             Console.Write("a:\n" + a);
             Console.WriteLine("Track a = " + a.Track());
             Console.Write("\nb:\n" + b);
