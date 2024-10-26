@@ -1,13 +1,8 @@
 ﻿namespace t3
 {
-    abstract class Lesson
+    abstract class Lesson : TrainingEntity
     {
-        public string? TextDescription { get; protected set; }
-
-        public Lesson(string? description) 
-        {
-            TextDescription = description;
-        }
+        public Lesson(string? description) : base(description) { }
 
         public abstract Lesson Copy();
     }
