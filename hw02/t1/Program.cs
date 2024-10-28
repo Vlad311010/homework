@@ -26,6 +26,8 @@
 
         public double Distance(Point other)
         {
+            if (other == null) return -1;
+
             return Math.Sqrt(
                 (X - other.X) * (X - other.X) +
                 (Y - other.Y) * (Y - other.Y) +
