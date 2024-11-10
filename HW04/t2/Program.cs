@@ -16,6 +16,7 @@ namespace t2
             Console.WriteLine("a - b: " + (a + b).ToString());
             Console.WriteLine("a + b: " + (a - b).ToString());
             Console.WriteLine("b + 1: " + (b + 1) + " = " + (double)(b + 1));
+            Console.WriteLine("a * 2 == 1/1: " + (a * 2) + " = " + 1 + " => " + (a * 2).Equals(new Fraction(1, 1)));
         }
     }
 }

@@ -1,11 +1,9 @@
 ﻿namespace t1
 {
-    internal class MatrixTracker<T>
+    internal class MatrixTracker<T> : IDisposable
     {
-        int _lastChangedRow = -1;
-        int _lastChangedColumn = -1;
-        DiagonalMatrix<T> _trackedMatrix;
-        T _previousValue;
+        private DiagonalMatrix<T> _trackedMatrix;
+        private Stack<ValueTuple<int, int, T>> _changesStack = new Stack<ValueTuple<int, int, T>>();
 
 
         public MatrixTracker(DiagonalMatrix<T> matrix)
@@ -16,19 +14,27 @@
 
         private void OnElementChange(object? sender, MatrixEventArgs<T> e)
         {
-            _lastChangedColumn = e.Column;
-            _lastChangedRow = e.Row;
-            _previousValue = e.oldValue;
+            _changesStack.Push((e.Column, e.Row, e.oldValue));
         }
 
         public void Undo()
         {
-            if (_lastChangedRow < 0 || _lastChangedColumn < 0)
+            if (_changesStack.Count == 0)
             {
                 throw new InvalidOperationException("No changes has been done to the tracked matrix");
             }
 
-            _trackedMatrix[_lastChangedColumn, _lastChangedRow] = _previousValue;
+            (int column, int row, T previousValue) = _changesStack.Pop();
+            
+            _trackedMatrix.ElementChanged -= OnElementChange;
+            _trackedMatrix[column, row] = previousValue;
+            _trackedMatrix.ElementChanged += OnElementChange;
+        }
+
+        public void Dispose()
+        {
+            // unsubscribe event to avoid possible memory leak
+            _trackedMatrix.ElementChanged -= OnElementChange;
         }
     }
 }

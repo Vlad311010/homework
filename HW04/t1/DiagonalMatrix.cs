@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml.Linq;
+﻿using System.Text;
 
 namespace t1
 {
@@ -42,15 +37,13 @@ namespace t1
             {
                 if (IsIndexValid(i, j))
                     return IsDiagonalIndex(i, j) ? _elements[i] : default!;
-                else
-                    throw new IndexOutOfRangeException($"Invalid index [{i},{j}]");
+                
+                throw new IndexOutOfRangeException($"Invalid index [{i},{j}]");
             }
             set
             {
                 if (IsIndexValid(i, j) && IsDiagonalIndex(i, j))
                 {
-
-
                     if (!_elements[i].Equals(value))
                     {
                         if (ElementChanged != null)
@@ -64,15 +57,16 @@ namespace t1
             }
         }
 
-        private bool IsIndexValid(int i, int j)
-        {
-            return i == j && i >= 0 && i < _elements.Length;
-        }
-
         private bool IsDiagonalIndex(int i, int j)
         {
             return i == j;
         }
+
+        private bool IsIndexValid(int i, int j)
+        {
+            return IsDiagonalIndex(i, j) && i >= 0 && i < _elements.Length;
+        }
+
 
         public override string ToString()
         {

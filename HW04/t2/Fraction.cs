@@ -20,7 +20,7 @@ namespace t2
             // Simplify;
             if (_numerator < 0) // for convenience fraction sign keeped in denominator
             {
-                _numerator = Math.Abs(_numerator);
+                _numerator *= -1;
                 _denominator *= -1;
             }
             int gcd = GCD(_numerator, _denominator);
@@ -47,17 +47,13 @@ namespace t2
 
         public override string ToString() 
         { 
-            return $"{_numerator}\\{_denominator}";
+            return $"{_numerator}/{_denominator}";
         }
 
         public override bool Equals(object? obj)
         {
             Fraction other = obj as Fraction;
-            if (other == null)
-                return false;
-
-            return _denominator == other._denominator && _numerator == other._numerator;
-            
+            return other != null && _denominator == other._denominator && _numerator == other._numerator;
         }
 
         public int CompareTo(Fraction? other)
@@ -65,19 +61,8 @@ namespace t2
             if (other == null)
                 throw new ArgumentException("Can't compare fraction with null value");
 
-            if (_denominator == other._denominator)
-                return _numerator.CompareTo(other._numerator);
-            else // cross multiplication
-            {
-                int num = _numerator;
-                int den = _denominator;
-                int otherNum = other._numerator;
-                int otherDen = other._denominator;
-
-                int res = num * otherDen - den * otherNum;
-
-                return Math.Sign(res);
-            }
+            // Cross-multiply and compare directly
+            return (_numerator * other._denominator).CompareTo(other._numerator * _denominator);
         }
 
         public static Fraction operator +(Fraction a) => a;
