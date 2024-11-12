@@ -26,7 +26,6 @@ namespace t1
                 return;
             }
 
-
             _elements = new T[elements.Length];
             Array.Copy(elements, _elements, elements.Length);
         }
@@ -37,7 +36,7 @@ namespace t1
             {
                 if (IsIndexValid(i, j))
                     return IsDiagonalIndex(i, j) ? _elements[i] : default!;
-                
+
                 throw new IndexOutOfRangeException($"Invalid index [{i},{j}]");
             }
             set
@@ -66,7 +65,6 @@ namespace t1
         {
             return IsDiagonalIndex(i, j) && i >= 0 && i < _elements.Length;
         }
-
 
         public override string ToString()
         {
