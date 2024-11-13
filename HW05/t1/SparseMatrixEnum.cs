@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 
 namespace t1
 {
@@ -10,10 +9,8 @@ namespace t1
 
         public SparseMatrixEnum(long[] values)
         {
-            // what is preferred way to initialize _currentIdx? inside constructor or on a class level?
             _values = values;
         }
-
         public bool MoveNext()
         {
             _currentIdx++;

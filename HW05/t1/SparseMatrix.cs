@@ -1,6 +1,5 @@
 ﻿using System.Collections;
-
-using MatrixIndex = (int column, int row);
+using MatrixIndex = (int Column, int Row);
 
 namespace t1
 {
@@ -36,7 +35,9 @@ namespace t1
 
         public IEnumerable<(int, int, long)> GetNonzeroElements()
         {
-            return _nonzeroElements.OrderBy(pair => (pair.Key.row, pair.Key.column)).Select(pair => (pair.Key.column, pair.Key.row, pair.Value));
+            return _nonzeroElements
+                .OrderBy(pair => (pair.Key.Row, pair.Key.Column))
+                .Select(pair => (pair.Key.Column, pair.Key.Row, pair.Value));
         }
 
         public int GetCount(long x)
