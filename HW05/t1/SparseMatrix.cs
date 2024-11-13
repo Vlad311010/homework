@@ -4,7 +4,7 @@ using MatrixIndex = (int column, int row);
 
 namespace t1
 {
-    internal class SparseMatrix : IEnumerable<long>
+    public class SparseMatrix : IEnumerable<long>
     {
         int _columns;
         int _rows;

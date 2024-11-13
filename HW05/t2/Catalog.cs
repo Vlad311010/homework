@@ -1,36 +1,27 @@
-﻿using System.Text.RegularExpressions;
-
-
-namespace t2
+﻿namespace t2
 {
-    internal class Catalog
+    public class Catalog
     {
-        Dictionary<string, Book> _catalog = new Dictionary<string, Book>();
+        Dictionary<ISBN13, Book> _catalog = new Dictionary<ISBN13, Book>();
 
-        public void Add(string isbn, Book book)
+        public ICollection<ISBN13> Keys => _catalog.Keys;
+
+        public ICollection<Book> Values => _catalog.Values;
+
+        public int Count => _catalog.Count;
+
+        public bool IsReadOnly => false;
+
+        public Book this[ISBN13 isbn] 
         {
-            IsCorrectISBN(isbn);
-            try
+            get
             {
-                _catalog.Add(SimplifyISBN(isbn), book);
+                return _catalog[isbn];
             }
-            catch (ArgumentException e)
+            set 
             {
-                // cant update book 
-
-                throw;
+                _catalog[isbn] = value;
             }
-        }
-
-        private bool IsCorrectISBN(string isbn)
-        {
-            isbn = SimplifyISBN(isbn);
-            return Regex.IsMatch(isbn, "^[0-9]{13}$");
-        }
-
-        private string SimplifyISBN(string isbn)
-        {
-            return isbn.Replace("-", "");
         }
 
         public IEnumerable<Book> WrittenBy(string author)
@@ -42,7 +33,7 @@ namespace t2
                 .OrderBy(book => book.PublicationData);
         }
 
-        public IEnumerable<string> GetBook()
+        public IEnumerable<string> GetBooks()
         {
             // Get a set of book titles from the catalog, sorted alphabetically
             return _catalog
@@ -65,5 +56,6 @@ namespace t2
                 .Select(x => x.Value)
                 .Count(book => book.Authors.Contains(author));
         }
+
     }
 }

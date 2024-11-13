@@ -3,7 +3,7 @@ using System.Collections;
 
 namespace t1
 {
-    internal class SparseMatrixEnum : IEnumerator
+    public class SparseMatrixEnum : IEnumerator
     {
         public long[] _values;
         int _currentIdx = -1;

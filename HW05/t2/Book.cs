@@ -1,6 +1,6 @@
 ﻿namespace t2
 {
-    internal class Book
+    public class Book
     {
         public string Title { get; private set; }
         public DateOnly? PublicationData { get; private set; }
