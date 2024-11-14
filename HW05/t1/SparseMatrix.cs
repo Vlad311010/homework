@@ -53,25 +53,17 @@ namespace t1
             return GetEnumerator();
         }
 
-        public SparseMatrixEnum GetEnumerator()
+        public IEnumerator<long> GetEnumerator()
         {
-            long[] elements = new long[_columns * _rows];
             for (int y = 0; y < _rows; y++)
             {
                 for (int x = 0; x < _columns; x++)
                 {
-                    elements[x + y * _columns] = this[x, y];
                     long value = 0;
                     _nonzeroElements.TryGetValue((x, y), out value);
+                    yield return value; 
                 }
             }
-            
-            return new SparseMatrixEnum(elements);
-        }
-
-        IEnumerator<long> IEnumerable<long>.GetEnumerator()
-        {
-            return (IEnumerator<long>)GetEnumerator();
         }
     }
 }
