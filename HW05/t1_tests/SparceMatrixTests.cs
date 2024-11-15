@@ -5,25 +5,25 @@ namespace t1_tests
     [TestClass]
     public class SparceMatrixTests
     {
-        int cols = 10;
-        int rows = 10;
-        SparseMatrix matrix;
+        int _cols = 10;
+        int _rows = 10;
+        SparseMatrix _matrix;
 
         [TestInitialize]
         public void Init()
         {
-            matrix = new SparseMatrix(cols, rows);
+            _matrix = new SparseMatrix(_cols, _rows);
 
-            matrix[0, 0] = 1;
-            matrix[9, 0] = 1;
-            matrix[0, 9] = 1;
-            matrix[9, 9] = 1;
-            matrix[4, 4] = 1;
+            _matrix[0, 0] = 1;
+            _matrix[9, 0] = 1;
+            _matrix[0, 9] = 1;
+            _matrix[9, 9] = 1;
+            _matrix[4, 4] = 1;
 
-            matrix[1, 0] = 2;
-            matrix[8, 0] = 2;
-            matrix[1, 9] = 2;
-            matrix[8, 9] = 2;
+            _matrix[1, 0] = 2;
+            _matrix[8, 0] = 2;
+            _matrix[1, 9] = 2;
+            _matrix[8, 9] = 2;
         }
 
 
@@ -33,7 +33,7 @@ namespace t1_tests
         [DataRow(2, 4)]
         public void GetCountTest(int countTarget, int result)
         {
-            Assert.AreEqual(matrix.GetCount(countTarget), result);
+            Assert.AreEqual(_matrix.GetCount(countTarget), result);
         }
         
         [TestMethod]
@@ -48,7 +48,7 @@ namespace t1_tests
         [DataRow(8, 9, 9, 1)]
         public void GetNonzeroElements(int elementIdx, int column, int row, int value)
         {
-            var nonZeroValues = matrix.GetNonzeroElements().ToArray();
+            var nonZeroValues = _matrix.GetNonzeroElements().ToArray();
             Assert.AreEqual(nonZeroValues[elementIdx].Item1, column);
             Assert.AreEqual(nonZeroValues[elementIdx].Item2, row);
             Assert.AreEqual(nonZeroValues[elementIdx].Item3, value);

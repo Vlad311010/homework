@@ -8,6 +8,9 @@ namespace t2
 
         public ISBN13(string isbn) 
         {
+            if (isbn == null)
+                throw new ArgumentNullException(nameof(isbn));
+
             if (!IsValidISBNFormat(isbn))
                 throw new ArgumentException($"Invaldi ISNB code format {isbn}");
 
@@ -16,8 +19,8 @@ namespace t2
 
         private bool IsValidISBNFormat(string isbn)
         {
-            string shortFormRegex = "^[0-9]{13}$";
-            string regex = "^[0-9]{3}-[0-9]{1}-[0-9]{2}-[0-9]{6}-[0-9]{1}$";
+            const string shortFormRegex = "^[0-9]{13}$";
+            const string regex = "^[0-9]{3}-[0-9]{1}-[0-9]{2}-[0-9]{6}-[0-9]{1}$";
             return Regex.IsMatch(isbn, shortFormRegex) || Regex.IsMatch(isbn, regex);
         }
 

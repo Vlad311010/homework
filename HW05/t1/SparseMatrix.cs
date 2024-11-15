@@ -1,5 +1,5 @@
 ﻿using System.Collections;
-using MatrixIndex = (int Column, int Row);
+using MatrixIndexes = (int Column, int Row);
 
 namespace t1
 {
@@ -8,7 +8,7 @@ namespace t1
         int _columns;
         int _rows;
 
-        Dictionary<MatrixIndex, long> _nonzeroElements = new Dictionary<MatrixIndex, long>();
+        Dictionary<MatrixIndexes, long> _nonzeroElements = new Dictionary<MatrixIndexes, long>();
 
         public SparseMatrix(int columns, int rows)
         {
@@ -23,14 +23,28 @@ namespace t1
         {
             get
             {
+                if (!IsValideIndex(column, row))
+                    throw new IndexOutOfRangeException($"Index was outside the bounds of the matrix. Index: ({column}, {row})");
+
                 long matrixValue = 0;
                 _nonzeroElements.TryGetValue((column, row), out matrixValue);
                 return matrixValue;
             }
             set
             {
-                _nonzeroElements[(column, row)] = value;
+                if (!IsValideIndex(column, row))
+                    throw new IndexOutOfRangeException($"Index was outside the bounds of the matrix. Index: ({column}, {row})");
+
+                if (value == 0 && _nonzeroElements.ContainsKey((column, row)))
+                    _nonzeroElements.Remove((column, row));
+                else 
+                    _nonzeroElements[(column, row)] = value;
             }
+        }
+
+        private bool IsValideIndex(int column, int row)
+        {
+            return column >= 0 && row >= 0 && column < _columns && row < _rows;
         }
 
         public IEnumerable<(int, int, long)> GetNonzeroElements()
@@ -59,9 +73,7 @@ namespace t1
             {
                 for (int x = 0; x < _columns; x++)
                 {
-                    long value = 0;
-                    _nonzeroElements.TryGetValue((x, y), out value);
-                    yield return value; 
+                    yield return this[x, y];
                 }
             }
         }

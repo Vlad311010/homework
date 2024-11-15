@@ -16,12 +16,13 @@
         {
             get
             {
-                return _catalog[isbn];
+                if (_catalog.TryGetValue(isbn, out Book? book))
+                    return book;
+                
+                throw new KeyNotFoundException($"Catalog does not containe entry with {isbn} key.");
             }
-            set 
-            {
-                _catalog[isbn] = value;
-            }
+            
+            set => _catalog[isbn] = value;
         }
 
         public IEnumerable<Book> WrittenBy(string author)
@@ -37,25 +38,16 @@
         {
             // Get a set of book titles from the catalog, sorted alphabetically
             return _catalog
-                .Select(x => x.Value.Title)
+                .Select(keyValue => keyValue.Value.Title)
                 .OrderBy(title => title);
         }
 
         public IEnumerable<(string, int)> GetAuthorBookCounts()
         {
             return _catalog
-                .Select(KeyValue => KeyValue.Value.Authors)
-                .SelectMany(authors =>
-                    authors.Select(author => (author, CountAuthorOccurence(author))))
-                .ToHashSet(); // remove duplicates
+                .SelectMany(keyValue => keyValue.Value.Authors) // get collection of all authors
+                .GroupBy(author => author)
+                .Select(group => (group.Key, group.Count()));
         }
-
-        private int CountAuthorOccurence(string author)
-        {
-            return _catalog
-                .Select(x => x.Value)
-                .Count(book => book.Authors.Contains(author));
-        }
-
     }
 }
