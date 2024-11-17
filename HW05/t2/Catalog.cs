@@ -2,15 +2,9 @@
 {
     public class Catalog
     {
-        Dictionary<ISBN13, Book> _catalog = new Dictionary<ISBN13, Book>();
-
-        public ICollection<ISBN13> Keys => _catalog.Keys;
-
-        public ICollection<Book> Values => _catalog.Values;
-
         public int Count => _catalog.Count;
-
-        public bool IsReadOnly => false;
+        
+        private Dictionary<ISBN13, Book> _catalog = new Dictionary<ISBN13, Book>();
 
         public Book this[ISBN13 isbn] 
         {
