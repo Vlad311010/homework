@@ -33,66 +33,21 @@ namespace t2.Library.SerializationModels
         {
             reader.MoveToContent();
             reader.ReadStartElement();
-
-            Title = reader.ReadElementContentAsString();
-            PublicationData = DateOnly.ParseExact(reader.ReadElementContentAsString(), DateStringFormat);
-            reader.ReadStartElement("Authors"); 
-            while (reader.NodeType != XmlNodeType.EndElement)
             {
-                var author = new AuthorSerializationModel();
-                author.ReadXml(reader);
-                Authors.Add(author);
-            }
-            reader.ReadEndElement(); 
-            
-            reader.ReadEndElement();
-            
-            
-
-
-            /*bool noNodes = false;
-            reader.ReadStartElement("Book");
-            while (!noNodes)
-            {
-                while (reader.NodeType == XmlNodeType.Element)
-                {   
-                    if (reader.Name == nameof(Title))
+                Title = reader.ReadElementContentAsString();
+                PublicationData = DateOnly.ParseExact(reader.ReadElementContentAsString(), DateStringFormat);
+                reader.ReadStartElement("Authors");
+                {
+                    while (reader.NodeType != XmlNodeType.EndElement)
                     {
-                        Title = reader.ReadElementContentAsString();
-                    }
-                    else if (reader.Name == nameof(PublicationData))
-                    {
-                        var dateValue = reader.ReadElementContentAsString();
-                        PublicationData = DateOnly.ParseExact(dateValue, DateStringFormat);
-                    }
-                    else if (reader.Name == nameof(Authors))
-                    {
-                        reader.ReadStartElement("Authors");                        
-                        while (reader.NodeType == XmlNodeType.Element && reader.Name == AuthorsCollectionElementName)
-                        {
-                            var element = new AuthorSerializationModel();
-                            element.ReadXml(reader);
-                            Authors.Add(element);
-                        }
-                        reader.ReadEndElement();                        
-                    }
-                    // else if (reader.Name == AuthorsCollectionElementName)
-                    // {
-                       // var element = new AuthorSerializationModel();
-                            // element.ReadXml(reader);
-                            // Authors.Add(element); 
-                    // }
-                    else
-                    {
-                        noNodes = reader.Read();
+                        var author = new AuthorSerializationModel();
+                        author.ReadXml(reader);
+                        Authors.Add(author);
                     }
                 }
-                if (noNodes)
-                    break;
-                
-                noNodes = reader.Read();
+                reader.ReadEndElement();
             }
-            reader.ReadEndElement();*/
+            reader.ReadEndElement();
         }
 
         public void WriteXml(XmlWriter writer)

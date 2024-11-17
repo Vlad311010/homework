@@ -30,43 +30,14 @@ namespace t2.Library.SerializationModels
         {
             reader.MoveToContent();
             reader.ReadStartElement();
-
-            FirstName = reader.ReadElementContentAsString();
-            LastName = reader.ReadElementContentAsString();
-            var dateValue = reader.ReadElementContentAsString();
-            BirthDate = DateOnly.ParseExact(dateValue, "yyyy.MM.dd");
-
-            reader.ReadEndElement();
-
-            /*bool noNodes = false;
-            reader.ReadStartElement("Author");
-            while (!noNodes) // read xml while there is any nodes
             {
-                while (reader.NodeType == XmlNodeType.Element)
-                {
-                    if (reader.Name == nameof(FirstName))
-                    {
-                        FirstName = reader.ReadElementContentAsString();
-                    }
-                    else if (reader.Name == nameof(LastName))
-                    {
-                        LastName = reader.ReadElementContentAsString();
-                    }   
-                    else if (reader.Name == nameof(BirthDate))
-                    {
-                        var dateValue = reader.ReadElementContentAsString();
-                        BirthDate = DateOnly.ParseExact(dateValue, "yyyy.MM.dd");
-                    }
-                    else
-                    {
-                        noNodes = reader.Read(); // skip to next xml node
-                    }
-                }
-                if (noNodes)
-                    break;
-                noNodes = reader.Read();
+
+                FirstName = reader.ReadElementContentAsString();
+                LastName = reader.ReadElementContentAsString();
+                var dateValue = reader.ReadElementContentAsString();
+                BirthDate = DateOnly.ParseExact(dateValue, "yyyy.MM.dd");
             }
-            reader.ReadEndElement();*/
+            reader.ReadEndElement();
         }
 
         public void WriteXml(XmlWriter writer)

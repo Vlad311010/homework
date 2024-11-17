@@ -49,6 +49,7 @@ namespace t2
                 catalogXml = writer.ToString();
                 Console.WriteLine(catalogXml);
                 CatalogSerializationModel csm = catalogSerializer.Deserialize(new StringReader(catalogXml)) as CatalogSerializationModel;
+
             }
 
             /*string xml;

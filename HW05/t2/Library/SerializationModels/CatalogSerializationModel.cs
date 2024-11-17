@@ -29,76 +29,22 @@ namespace t2.Library.SerializationModels
         public void ReadXml(XmlReader reader)
         {
             reader.MoveToContent();
-            
             reader.ReadStartElement("Catalog");
-
-            while (reader.NodeType != XmlNodeType.EndElement && reader.Name == CatalogEntryElementName)
             {
-                reader.ReadStartElement(CatalogEntryElementName);
+                while (reader.NodeType != XmlNodeType.EndElement && reader.Name == CatalogEntryElementName)
                 {
-                    string isbn = reader.ReadElementContentAsString();
-                    
-                    var book = new BookSerializationModel();
-                    book.ReadXml(reader);
-                    
-                    Entries.Add(isbn, book);
-
-                    /*reader.ReadStartElement("Book");
-                    while (reader.NodeType != XmlNodeType.EndElement)
+                    reader.ReadStartElement(CatalogEntryElementName);
                     {
-                        var book = new BookSerializationModel();
+                        string isbn = reader.ReadElementContentAsString();
+                        BookSerializationModel book = new BookSerializationModel();
                         book.ReadXml(reader);
+
                         Entries.Add(isbn, book);
                     }
-                    reader.ReadEndElement();*/
+                    reader.ReadEndElement();
                 }
-                reader.ReadEndElement();
             }
-
             reader.ReadEndElement();
-
-
-            /*bool noNodes = false;
-            reader.ReadStartElement("Catalog");
-            while (!noNodes)
-            {
-                while (reader.NodeType == XmlNodeType.Element)
-                {
-                    if (reader.Name == CatalogEntryElementName)
-                    {
-                        string isbn = "";
-                        BookSerializationModel? book = new BookSerializationModel();
-
-                        reader.ReadStartElement(CatalogEntryElementName);
-                        while (reader.NodeType == XmlNodeType.Element)
-                        {
-                            if (reader.Name == "ISBN")
-                            {
-                                isbn = reader.ReadElementContentAsString();
-                            }
-                            if (reader.Name == "Book")
-                            {
-                                book.ReadXml(reader);
-                            }
-                        }
-
-                        if (!string.IsNullOrEmpty(isbn) && book != null)
-                            Entries.Add(isbn, book);
-                        
-                        reader.ReadEndElement();
-                    }
-                    else
-                    {
-                        if (noNodes)
-                            break;
-                        noNodes = reader.Read();
-                    }
-                }
-                if (noNodes)
-                    break;
-                noNodes = reader.Read();
-            }
-            reader.ReadEndElement();*/
         }
 
         public void WriteXml(XmlWriter writer)
