@@ -1,4 +1,4 @@
-using t2;
+using t2.Library;
 
 namespace t2_tests
 {
