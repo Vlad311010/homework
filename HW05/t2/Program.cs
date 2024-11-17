@@ -41,7 +41,6 @@ namespace t2
             var authorSerializer = new XmlSerializer(typeof(AuthorSerializationModel));
             var catalogSerializer = new XmlSerializer(typeof(CatalogSerializationModel));
 
-
             string catalogXml;
             using (var writer = new StringWriter())
             {
@@ -51,6 +50,8 @@ namespace t2
                 CatalogSerializationModel csm = catalogSerializer.Deserialize(new StringReader(catalogXml)) as CatalogSerializationModel;
 
             }
+
+            Console.WriteLine(catalog.Equals(catalog));
 
             /*string xml;
             using (var writer = new StringWriter())

@@ -4,7 +4,9 @@
     {
         public string Title { get; private set; }
         public DateOnly? PublicationData { get; private set; }
-        public HashSet<Author> Authors { get; private set; } = new HashSet<Author>();
+        public IReadOnlyCollection<Author> Authors => _authors;
+
+        private HashSet<Author> _authors = new HashSet<Author>();
 
         public Book(string title, DateOnly? publicationDate, IEnumerable<Author> authors)
         {
@@ -15,8 +17,28 @@
 
             foreach (var author in authors)
             {
-                Authors.Add(author);
+                _authors.Add(author);
             }
+        }
+
+        public override bool Equals(object? obj)
+        {
+            return obj is Book other
+                && Title == other.Title
+                && PublicationData == other.PublicationData
+                && _authors.SetEquals(other._authors);
+        }
+
+        public override int GetHashCode()
+        {
+            int hash = Title.GetHashCode();
+            hash = HashCode.Combine(hash, PublicationData?.GetHashCode() ?? 0);
+
+            foreach (var author in _authors)
+            {
+                hash = HashCode.Combine(hash, author.GetHashCode());
+            }
+            return hash;
         }
     }
 }
