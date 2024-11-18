@@ -75,9 +75,8 @@ namespace t2.Library
                     return false;
                 }
             }
+            
             return true;
-
-            // return Entries.SequenceEqual(other.Entries);
         }
         
         /*public override int GetHashCode()
