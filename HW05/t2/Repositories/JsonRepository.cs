@@ -6,7 +6,11 @@ namespace t2.Repositories
 {
     internal class JsonRepository : IRepository<Catalog>
     {
-        readonly static JsonSerializerOptions serializerOptions = new JsonSerializerOptions() { Converters = { new CatalogDictionaryConverter() } };
+        readonly static JsonSerializerOptions serializerOptions = new JsonSerializerOptions() 
+        { 
+            WriteIndented = true,
+            Converters = { new CatalogDictionaryConverter() } 
+        };
 
         public void Serialize(Catalog catalog, string fileName)
         {

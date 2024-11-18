@@ -1,7 +1,4 @@
-﻿using System.Text.Json;
-using System.Xml.Serialization;
-using t2.Library;
-using t2.Library.SerializationModels;
+﻿using t2.Library;
 using t2.Repositories;
 using t2.Serializers;
 
@@ -35,24 +32,16 @@ namespace t2
             catalog["9781942993889"] = book03;
             catalog["9780575048003"] = book04;
 
-            /*
-            var bookSM = new BookSerializationModel(book02);
-            var authorSM = new AuthorSerializationModel(author02);
-            var catalogSM = new CatalogSerializationModel(catalog);
-
-            var bookSerializer = new XmlSerializer(typeof(BookSerializationModel));
-            var authorSerializer = new XmlSerializer(typeof(AuthorSerializationModel));
-            var catalogSerializer = new XmlSerializer(typeof(CatalogSerializationModel));
-            */
-
+            string xmlFilePath = @".\PersistentData\catalog.xml";
             XMLRepositoty xmlRepositoty = new XMLRepositoty();
-            xmlRepositoty.Serialize(catalog, @"D:\CoherentHomework\homework\HW05\t2\PersistentData\catalog.xml");
-            Catalog desXmlCatalog = xmlRepositoty.Deserialize(@"D:\CoherentHomework\homework\HW05\t2\PersistentData\catalog.xml");
+            xmlRepositoty.Serialize(catalog, xmlFilePath);
+            Catalog desXmlCatalog = xmlRepositoty.Deserialize(xmlFilePath);
             Console.WriteLine("Are equal: " + desXmlCatalog.Equals(catalog));
 
+            string jsonFilePath = @".\PersistentData\catalog.json";
             JsonRepository jsonRepositoty = new JsonRepository();
-            jsonRepositoty.Serialize(catalog, @"D:\CoherentHomework\homework\HW05\t2\PersistentData\catalog.json");
-            Catalog desJsonCatalog = jsonRepositoty.Deserialize(@"D:\CoherentHomework\homework\HW05\t2\PersistentData\catalog.json");
+            jsonRepositoty.Serialize(catalog, jsonFilePath);
+            Catalog desJsonCatalog = jsonRepositoty.Deserialize(jsonFilePath);
             Console.WriteLine("Are equal: " + desJsonCatalog.Equals(catalog));
         }
     }
