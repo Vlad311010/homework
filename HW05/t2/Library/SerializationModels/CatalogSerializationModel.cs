@@ -1,5 +1,4 @@
-﻿using System.Text.Json;
-using System.Xml;
+﻿using System.Xml;
 using System.Xml.Schema;
 using System.Xml.Serialization;
 
@@ -63,21 +62,6 @@ namespace t2.Library.SerializationModels
 
                 writer.WriteEndElement();
             }
-        }
-
-        public string ToJson()
-        {
-
-            return JsonSerializer.Serialize(this);
-        }
-
-        public static CatalogSerializationModel FromJson(string json)
-        {
-            CatalogSerializationModel? catalogSM = JsonSerializer.Deserialize<CatalogSerializationModel>(json);
-            if (catalogSM == null)
-                throw new ArgumentException($"Can't parse given json to {typeof(CatalogSerializationModel)} type");
-
-            return catalogSM;
         }
     }
 }

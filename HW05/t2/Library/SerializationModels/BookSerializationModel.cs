@@ -1,7 +1,6 @@
 ﻿using System.Xml.Serialization;
 using System.Xml;
 using System.Xml.Schema;
-using System.Text.Json;
 
 namespace t2.Library.SerializationModels
 {
@@ -68,20 +67,6 @@ namespace t2.Library.SerializationModels
                 writer.WriteEndElement();
             }
             writer.WriteEndElement();            
-        }
-
-        public string ToJson()
-        {
-            return JsonSerializer.Serialize(this);
-        }
-
-        public static BookSerializationModel FromJson(string json)
-        {
-            BookSerializationModel? bookSM = JsonSerializer.Deserialize<BookSerializationModel>(json);
-            if (bookSM == null)
-                throw new ArgumentException($"Can't parse given json to {typeof(BookSerializationModel)} type");
-
-            return bookSM;
         }
     }
 }
