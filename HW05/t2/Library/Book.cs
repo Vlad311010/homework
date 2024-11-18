@@ -1,4 +1,6 @@
-﻿namespace t2.Library
+﻿using t2.Library.SerializationModels;
+
+namespace t2.Library
 {
     public class Book
     {
@@ -20,6 +22,8 @@
                 _authors.Add(author);
             }
         }
+
+        public Book(BookSerializationModel bookSM) : this(bookSM.Title, bookSM.PublicationData, bookSM.Authors.Select(a => new Author(a))) { }
 
         public override bool Equals(object? obj)
         {

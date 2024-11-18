@@ -1,6 +1,9 @@
-﻿using System.Xml.Serialization;
+﻿using System.Text.Json;
+using System.Xml.Serialization;
 using t2.Library;
 using t2.Library.SerializationModels;
+using t2.Repositories;
+using t2.Serializers;
 
 namespace t2
 {
@@ -32,66 +35,25 @@ namespace t2
             catalog["9781942993889"] = book03;
             catalog["9780575048003"] = book04;
 
+            /*
             var bookSM = new BookSerializationModel(book02);
             var authorSM = new AuthorSerializationModel(author02);
             var catalogSM = new CatalogSerializationModel(catalog);
 
-
             var bookSerializer = new XmlSerializer(typeof(BookSerializationModel));
             var authorSerializer = new XmlSerializer(typeof(AuthorSerializationModel));
             var catalogSerializer = new XmlSerializer(typeof(CatalogSerializationModel));
+            */
 
-            string catalogXml;
-            using (var writer = new StringWriter())
-            {
-                catalogSerializer.Serialize(writer, catalogSM);
-                catalogXml = writer.ToString();
-                Console.WriteLine(catalogXml);
-                CatalogSerializationModel csm = catalogSerializer.Deserialize(new StringReader(catalogXml)) as CatalogSerializationModel;
+            XMLRepositoty xmlRepositoty = new XMLRepositoty();
+            xmlRepositoty.Serialize(catalog, @"D:\CoherentHomework\homework\HW05\t2\PersistentData\catalog.xml");
+            Catalog desXmlCatalog = xmlRepositoty.Deserialize(@"D:\CoherentHomework\homework\HW05\t2\PersistentData\catalog.xml");
+            Console.WriteLine("Are equal: " + desXmlCatalog.Equals(catalog));
 
-            }
-
-            Console.WriteLine(catalog.Equals(catalog));
-
-            /*string xml;
-            using (var writer = new StringWriter())
-            {
-                bookSerializer.Serialize(writer, bookSM);
-                xml = writer.ToString();
-                Console.WriteLine(writer.ToString());
-                var bsm = bookSerializer.Deserialize(new StringReader(xml)) as BookSerializationModel;
-            }*/
-
-                /*using (var writer = new StringWriter())
-                {
-                    authorSerializer.Serialize(writer,  authorSM);
-                    string content = writer.ToString();
-                    Console.WriteLine(content);
-                    var asm = authorSerializer.Deserialize(new StringReader(content)) as AuthorSerializationModel;
-                }*/
-
-
-                /*BookSerializationModel bsm = bookSerializer.Deserialize(new StringReader(xml)) as BookSerializationModel;
-                Console.WriteLine(bsm.Authors.Count);
-                Console.WriteLine(bsm.Title);
-                Console.WriteLine(bsm.PublicationData);*/
-
-
-
-                /*using (var writer = new StringWriter())
-                {
-                    authorSerializer.Serialize(writer, authorSM);
-                    Console.WriteLine(writer.ToString());
-                }*/
-
-                /*XmlSerializer nodeSerializer = new XmlSerializer(typeof(XmlNode));
-                XmlNode myNode = new XmlDocument().
-                CreateNode(XmlNodeType.Element, "AuthorNode", null);
-                using (var writer = new StringWriter())
-                {
-                    authorSerializer.Serialize(writer, authorSM);
-                    myNode.InnerText = writer.ToString();
-                }*/
-            }
+            JsonRepository jsonRepositoty = new JsonRepository();
+            jsonRepositoty.Serialize(catalog, @"D:\CoherentHomework\homework\HW05\t2\PersistentData\catalog.json");
+            Catalog desJsonCatalog = jsonRepositoty.Deserialize(@"D:\CoherentHomework\homework\HW05\t2\PersistentData\catalog.json");
+            Console.WriteLine("Are equal: " + desJsonCatalog.Equals(catalog));
         }
+    }
 }

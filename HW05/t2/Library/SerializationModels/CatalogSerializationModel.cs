@@ -1,5 +1,5 @@
-﻿using System.Xml;
-using System.Xml.Linq;
+﻿using System.Text.Json;
+using System.Xml;
 using System.Xml.Schema;
 using System.Xml.Serialization;
 
@@ -8,13 +8,16 @@ namespace t2.Library.SerializationModels
     [XmlRoot("Catalog")]
     public class CatalogSerializationModel : IXmlSerializable
     {
-        public Dictionary<ISBN13, BookSerializationModel> Entries = new Dictionary<ISBN13, BookSerializationModel>();
+        public Dictionary<ISBN13, BookSerializationModel> Entries { get; set; } = new Dictionary<ISBN13, BookSerializationModel>(); 
 
         private const string CatalogEntryElementName = "Entry";
         public CatalogSerializationModel() { }
 
         public CatalogSerializationModel(Catalog catalog)
         {
+            if (catalog == null)
+                throw new ArgumentNullException(nameof(catalog), "Catalog cannot be null.");
+
             Entries = catalog.Entries.ToDictionary(
                 keyValue => keyValue.Key,
                 KeyValue => new BookSerializationModel(KeyValue.Value)
@@ -60,6 +63,21 @@ namespace t2.Library.SerializationModels
 
                 writer.WriteEndElement();
             }
+        }
+
+        public string ToJson()
+        {
+
+            return JsonSerializer.Serialize(this);
+        }
+
+        public static CatalogSerializationModel FromJson(string json)
+        {
+            CatalogSerializationModel? catalogSM = JsonSerializer.Deserialize<CatalogSerializationModel>(json);
+            if (catalogSM == null)
+                throw new ArgumentException($"Can't parse given json to {typeof(CatalogSerializationModel)} type");
+
+            return catalogSM;
         }
     }
 }

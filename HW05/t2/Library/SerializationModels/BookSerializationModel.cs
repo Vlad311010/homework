@@ -1,16 +1,16 @@
 ﻿using System.Xml.Serialization;
 using System.Xml;
 using System.Xml.Schema;
+using System.Text.Json;
 
 namespace t2.Library.SerializationModels
 {
     [XmlRoot("Book")]
     public class BookSerializationModel : IXmlSerializable
     {
-        public int Id { get; set; }
-        public string Title { get; private set; }
-        public DateOnly? PublicationData { get; private set; }
-        public List<AuthorSerializationModel> Authors { get; private set; } = new List<AuthorSerializationModel>();
+        public string Title { get; set; }
+        public DateOnly? PublicationData { get; set; }
+        public List<AuthorSerializationModel> Authors { get; set; } = new List<AuthorSerializationModel>();
 
         private const string DateStringFormat = "yyyy.MM.dd";
         private const string AuthorsCollectionElementName = "Author";
@@ -19,6 +19,9 @@ namespace t2.Library.SerializationModels
 
         public BookSerializationModel(Book book) 
         {
+            if (book == null)
+                throw new ArgumentNullException(nameof(book), "Book cannot be null.");
+
             Title = book.Title;
             PublicationData = book.PublicationData;
             Authors = book.Authors.Select(a => new AuthorSerializationModel(a)).ToList();
@@ -65,6 +68,20 @@ namespace t2.Library.SerializationModels
                 writer.WriteEndElement();
             }
             writer.WriteEndElement();            
+        }
+
+        public string ToJson()
+        {
+            return JsonSerializer.Serialize(this);
+        }
+
+        public static BookSerializationModel FromJson(string json)
+        {
+            BookSerializationModel? bookSM = JsonSerializer.Deserialize<BookSerializationModel>(json);
+            if (bookSM == null)
+                throw new ArgumentException($"Can't parse given json to {typeof(BookSerializationModel)} type");
+
+            return bookSM;
         }
     }
 }

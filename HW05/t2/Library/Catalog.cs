@@ -1,11 +1,22 @@
-﻿namespace t2.Library
+﻿using t2.Library.SerializationModels;
+
+namespace t2.Library
 {
     public class Catalog
     {
         public int Count => _catalog.Count;
-        public Dictionary<ISBN13, Book> Entries => _catalog;
+        public IReadOnlyDictionary<ISBN13, Book> Entries => _catalog;
 
-        private Dictionary<ISBN13, Book> _catalog = new Dictionary<ISBN13, Book>();
+        public Dictionary<ISBN13, Book> _catalog = new Dictionary<ISBN13, Book>();
+
+        public Catalog() { }
+        public Catalog(CatalogSerializationModel catalogSM)
+        {
+            foreach (var entry in catalogSM.Entries)
+            {
+                this[entry.Key] = new Book(entry.Value);
+            }
+        }
 
         public Book this[ISBN13 isbn]
         {
@@ -17,7 +28,7 @@
                 throw new KeyNotFoundException($"Catalog does not containe entry with {isbn} key.");
             }
 
-            set => Entries[isbn] = value;
+            set => _catalog[isbn] = value;
         }
 
         public IEnumerable<Book> WrittenBy(Author author)
@@ -57,7 +68,16 @@
             if (other == null) 
                 return false;
 
-            return Entries.SequenceEqual(other.Entries);
+            foreach (ISBN13 isbn in Entries.Keys)
+            {
+                if (!this[isbn].Equals(other[isbn]))
+                {
+                    return false;
+                }
+            }
+            return true;
+
+            // return Entries.SequenceEqual(other.Entries);
         }
         
         /*public override int GetHashCode()
