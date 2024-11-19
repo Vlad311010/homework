@@ -1,4 +1,5 @@
-﻿using System.Xml;
+﻿using System.Reflection.PortableExecutable;
+using System.Xml;
 using System.Xml.Schema;
 using System.Xml.Serialization;
 
@@ -29,6 +30,9 @@ namespace t2.Library.SerializationModels
 
         public void ReadXml(XmlReader reader)
         {
+            if (reader == null) 
+                throw new ArgumentNullException(nameof(reader));
+
             reader.MoveToContent();
             reader.ReadStartElement();
             {
@@ -43,6 +47,9 @@ namespace t2.Library.SerializationModels
 
         public void WriteXml(XmlWriter writer)
         {
+            if (writer == null)
+                throw new ArgumentNullException(nameof(writer));
+
             writer.WriteElementString(nameof(FirstName), FirstName);
             writer.WriteElementString(nameof(LastName), LastName);
             writer.WriteElementString(nameof(BirthDate), BirthDate.ToString("yyyy.MM.dd"));

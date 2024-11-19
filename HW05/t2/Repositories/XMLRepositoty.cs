@@ -21,13 +21,20 @@ namespace t2.Serializers
 
         public Catalog Deserialize(string filePath) 
         {
-            using (var reader = new StreamReader(filePath))
+            try
             {
-                CatalogSerializationModel? catalogSM = Serializer.Deserialize(reader) as CatalogSerializationModel;
-                if (catalogSM == null)
-                    throw new XmlException("Can't parse given xml file");
+                using (var reader = new StreamReader(filePath))
+                {
+                    CatalogSerializationModel? catalogSM = Serializer.Deserialize(reader) as CatalogSerializationModel;
+                    if (catalogSM == null)
+                        throw new XmlException("Can't parse given xml file");
 
-                return new Catalog(catalogSM);
+                    return new Catalog(catalogSM);
+                }
+            }
+            catch (FileNotFoundException ex)
+            {
+                throw new FileNotFoundException(ex.FileName);
             }
         }
     }

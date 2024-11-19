@@ -25,14 +25,21 @@ namespace t2.Repositories
 
         public Catalog Deserialize(string fileName)
         {
-            using (var reader = new StreamReader(fileName))
+            try
             {
-                string json = reader.ReadToEnd();
-                CatalogSerializationModel? catalogSM = JsonSerializer.Deserialize<CatalogSerializationModel>(json, serializerOptions);
-                if (catalogSM == null)
-                    throw new JsonException("Can't parse given json file");
+                using (var reader = new StreamReader(fileName))
+                {
+                    string json = reader.ReadToEnd();
+                    CatalogSerializationModel? catalogSM = JsonSerializer.Deserialize<CatalogSerializationModel>(json, serializerOptions);
+                    if (catalogSM == null)
+                        throw new JsonException("Can't parse given json file");
 
-                return new Catalog(catalogSM);
+                    return new Catalog(catalogSM);
+                }
+            }
+            catch (FileNotFoundException ex)
+            {
+                throw new FileNotFoundException(ex.FileName);
             }
         }
     }

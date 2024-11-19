@@ -33,6 +33,9 @@ namespace t2.Library.SerializationModels
 
         public void ReadXml(XmlReader reader)
         {
+            if (reader == null)
+                throw new ArgumentNullException(nameof(reader));
+
             reader.MoveToContent();
             reader.ReadStartElement();
             {
@@ -54,6 +57,9 @@ namespace t2.Library.SerializationModels
 
         public void WriteXml(XmlWriter writer)
         {
+            if (writer == null)
+                throw new ArgumentNullException(nameof(writer));
+
             writer.WriteElementString(nameof(Title), Title);
             
             if (PublicationData.HasValue)

@@ -12,6 +12,9 @@ namespace t2.Library
         public Catalog() { }
         public Catalog(CatalogSerializationModel catalogSM)
         {
+            if (catalogSM == null)
+                throw new ArgumentNullException(nameof(catalogSM));
+
             foreach (var entry in catalogSM.Entries)
             {
                 this[entry.Key] = new Book(entry.Value);

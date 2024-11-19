@@ -32,7 +32,7 @@ namespace t2
             catalog["9781942993889"] = book03;
             catalog["9780575048003"] = book04;
 
-            string xmlFilePath = @".\PersistentData\catalog.xml";
+            string xmlFilePath = @".\PersistentData\catalog.xmla";
             XMLRepositoty xmlRepositoty = new XMLRepositoty();
             xmlRepositoty.Serialize(catalog, xmlFilePath);
             Catalog desXmlCatalog = xmlRepositoty.Deserialize(xmlFilePath);
