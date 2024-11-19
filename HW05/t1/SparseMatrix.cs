@@ -37,7 +37,7 @@ namespace t1
 
                 if (value == 0 && _nonzeroElements.ContainsKey((column, row)))
                     _nonzeroElements.Remove((column, row));
-                else 
+                else if (value != 0)
                     _nonzeroElements[(column, row)] = value;
             }
         }
