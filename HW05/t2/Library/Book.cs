@@ -17,6 +17,9 @@ namespace t2.Library
             Title = title;
             PublicationData = publicationDate;
 
+            if (authors == null)
+                return;
+
             foreach (var author in authors)
             {
                 _authors.Add(author);
