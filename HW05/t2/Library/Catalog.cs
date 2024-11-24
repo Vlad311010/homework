@@ -38,7 +38,7 @@ namespace t2.Library
         {
             return Entries
                 .Select(keyValue => keyValue.Value)
-                .Where(book => book.Authors.Contains(author))
+                .Where(book => book.Authors.Any(a => a.Equals(author)))
                 .OrderBy(book => book.PublicationData);
         }
 
