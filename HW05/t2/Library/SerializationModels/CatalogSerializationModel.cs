@@ -23,6 +23,22 @@ namespace t2.Library.SerializationModels
             );
         }
 
+        public Catalog AsCatalog()
+        {
+            Catalog catalog = new Catalog();
+            foreach (var entry in Entries)
+            {
+                catalog[entry.Key] = new Book(
+                        entry.Value.Title, 
+                        entry.Value.PublicationData, 
+                        entry.Value.Authors.Select(authorSM => authorSM.AsAuthor())
+                    );
+            }
+            
+            return catalog;
+        }
+
+
         public XmlSchema? GetSchema()
         {
             return null;

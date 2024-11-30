@@ -32,16 +32,14 @@ namespace t2
             catalog["9781942993889"] = book03;
             catalog["9780575048003"] = book04;
 
-            string xmlFilePath = @".\PersistentData\catalog.xmla";
-            XMLRepositoty xmlRepositoty = new XMLRepositoty();
-            xmlRepositoty.Serialize(catalog, xmlFilePath);
-            Catalog desXmlCatalog = xmlRepositoty.Deserialize(xmlFilePath);
+            XMLRepository xmlRepositoty = new XMLRepository();
+            xmlRepositoty.Serialize(catalog);
+            Catalog desXmlCatalog = xmlRepositoty.Deserialize();
             Console.WriteLine("Are equal: " + desXmlCatalog.Equals(catalog));
 
-            string jsonFilePath = @".\PersistentData\catalog.json";
             JsonRepository jsonRepositoty = new JsonRepository();
-            jsonRepositoty.Serialize(catalog, jsonFilePath);
-            Catalog desJsonCatalog = jsonRepositoty.Deserialize(jsonFilePath);
+            jsonRepositoty.Serialize(catalog);
+            Catalog desJsonCatalog = jsonRepositoty.Deserialize();
             Console.WriteLine("Are equal: " + desJsonCatalog.Equals(catalog));
         }
     }

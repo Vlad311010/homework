@@ -1,6 +1,4 @@
-﻿using t2.Library.SerializationModels;
-
-namespace t2.Library
+﻿namespace t2.Library
 {
     public class Catalog
     {
@@ -8,18 +6,6 @@ namespace t2.Library
         public IReadOnlyDictionary<ISBN13, Book> Entries => _catalog;
 
         public Dictionary<ISBN13, Book> _catalog = new Dictionary<ISBN13, Book>();
-
-        public Catalog() { }
-        public Catalog(CatalogSerializationModel catalogSM)
-        {
-            if (catalogSM == null)
-                throw new ArgumentNullException(nameof(catalogSM));
-
-            foreach (var entry in catalogSM.Entries)
-            {
-                this[entry.Key] = new Book(entry.Value);
-            }
-        }
 
         public Book this[ISBN13 isbn]
         {

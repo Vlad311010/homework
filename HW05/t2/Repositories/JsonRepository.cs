@@ -6,40 +6,35 @@ namespace t2.Repositories
 {
     internal class JsonRepository : IRepository<Catalog>
     {
+        readonly static string repositoryDataPath = @".\PersistentData\catalog.json";
+
         readonly static JsonSerializerOptions serializerOptions = new JsonSerializerOptions() 
         { 
             WriteIndented = true,
             Converters = { new CatalogDictionaryConverter() } 
         };
 
-        public void Serialize(Catalog catalog, string fileName)
+        public void Serialize(Catalog catalog)
         {
             CatalogSerializationModel catalogSM = new CatalogSerializationModel(catalog);
 
-            using (var writer = new StreamWriter(fileName))
+            using (var writer = new StreamWriter(repositoryDataPath))
             {
                 string jsonCatalog = JsonSerializer.Serialize<CatalogSerializationModel>(catalogSM, serializerOptions);
                 writer.Write(jsonCatalog);                
             }
         }
 
-        public Catalog Deserialize(string fileName)
+        public Catalog Deserialize()
         {
-            try
+            using (var reader = new StreamReader(repositoryDataPath))
             {
-                using (var reader = new StreamReader(fileName))
-                {
-                    string json = reader.ReadToEnd();
-                    CatalogSerializationModel? catalogSM = JsonSerializer.Deserialize<CatalogSerializationModel>(json, serializerOptions);
-                    if (catalogSM == null)
-                        throw new JsonException("Can't parse given json file");
+                string json = reader.ReadToEnd();
+                CatalogSerializationModel? catalogSM = JsonSerializer.Deserialize<CatalogSerializationModel>(json, serializerOptions);
+                if (catalogSM == null)
+                    throw new JsonException("Can't parse given json file");
 
-                    return new Catalog(catalogSM);
-                }
-            }
-            catch (FileNotFoundException ex)
-            {
-                throw new FileNotFoundException(ex.FileName);
+                return catalogSM.AsCatalog();
             }
         }
     }

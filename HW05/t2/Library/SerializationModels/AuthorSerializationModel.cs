@@ -1,5 +1,4 @@
-﻿using System.Reflection.PortableExecutable;
-using System.Xml;
+﻿using System.Xml;
 using System.Xml.Schema;
 using System.Xml.Serialization;
 
@@ -12,6 +11,8 @@ namespace t2.Library.SerializationModels
         public string LastName { get; set; }
         public DateOnly BirthDate { get; set; }
 
+        private const string DateStringFormat = "yyyy.MM.dd";
+
         public AuthorSerializationModel() { }
         public AuthorSerializationModel(Author author) 
         {
@@ -21,6 +22,11 @@ namespace t2.Library.SerializationModels
             FirstName = author.FirstName;
             LastName = author.LastName;
             BirthDate = author.BirthDate;
+        }
+
+        public Author AsAuthor()
+        {
+            return new Author(FirstName, LastName, BirthDate);
         }
 
         public XmlSchema? GetSchema()
@@ -40,7 +46,7 @@ namespace t2.Library.SerializationModels
                 FirstName = reader.ReadElementContentAsString();
                 LastName = reader.ReadElementContentAsString();
                 var dateValue = reader.ReadElementContentAsString();
-                BirthDate = DateOnly.ParseExact(dateValue, "yyyy.MM.dd");
+                BirthDate = DateOnly.ParseExact(dateValue, DateStringFormat);
             }
             reader.ReadEndElement();
         }
@@ -52,7 +58,7 @@ namespace t2.Library.SerializationModels
 
             writer.WriteElementString(nameof(FirstName), FirstName);
             writer.WriteElementString(nameof(LastName), LastName);
-            writer.WriteElementString(nameof(BirthDate), BirthDate.ToString("yyyy.MM.dd"));
+            writer.WriteElementString(nameof(BirthDate), BirthDate.ToString(DateStringFormat));
         }
     }
 }
