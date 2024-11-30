@@ -6,28 +6,29 @@ using t2.Repositories;
 
 namespace t2.Serializers
 {
-    internal class XMLRepositoty : IRepository<Catalog>
+    internal class XMLRepository : IRepository<Catalog>
     {
+        private static readonly string repositoryDataPath = @".\PersistentData\catalog.xml";
         private static readonly XmlSerializer Serializer = new XmlSerializer(typeof(CatalogSerializationModel));
 
-        public void Serialize(Catalog catalog, string filePath)
+        public void Serialize(Catalog catalog)
         {
             CatalogSerializationModel catalogSM = new CatalogSerializationModel(catalog);
-            using (var writer = new StreamWriter(filePath))
+            using (var writer = new StreamWriter(repositoryDataPath))
             {
                 Serializer.Serialize(writer, catalogSM);
             }
         }
 
-        public Catalog Deserialize(string filePath) 
+        public Catalog Deserialize()
         {
-            using (var reader = new StreamReader(filePath))
+            using (var reader = new StreamReader(repositoryDataPath))
             {
                 CatalogSerializationModel? catalogSM = Serializer.Deserialize(reader) as CatalogSerializationModel;
                 if (catalogSM == null)
                     throw new XmlException("Can't parse given xml file");
 
-                return new Catalog(catalogSM);
+                return catalogSM.AsCatalog();
             }
         }
     }

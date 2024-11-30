@@ -1,6 +1,4 @@
-﻿using t2.Library.SerializationModels;
-
-namespace t2.Library
+﻿namespace t2.Library
 {
     public class Book
     {
@@ -17,13 +15,14 @@ namespace t2.Library
             Title = title;
             PublicationData = publicationDate;
 
+            if (authors == null)
+                return;
+
             foreach (var author in authors)
             {
                 _authors.Add(author);
             }
         }
-
-        public Book(BookSerializationModel bookSM) : this(bookSM.Title, bookSM.PublicationData, bookSM.Authors.Select(a => new Author(a))) { }
 
         public override bool Equals(object? obj)
         {

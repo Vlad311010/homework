@@ -40,6 +40,6 @@ namespace t2.Library
         }
 
         public static implicit operator ISBN13(string isbn) => new ISBN13(isbn);
-        public static implicit operator string(ISBN13 isbn) => isbn.ISBN;
+        public static explicit operator string(ISBN13 isbn) => isbn.ISBN;
     }
 }

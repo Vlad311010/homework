@@ -26,6 +26,15 @@ namespace t2.Library.SerializationModels
             Authors = book.Authors.Select(a => new AuthorSerializationModel(a)).ToList();
         }
 
+        public Book AsBook()
+        {
+            return new Book(
+                Title, 
+                PublicationData, 
+                Authors.Select(authorSM => authorSM.AsAuthor())
+            );
+        }
+
         public XmlSchema? GetSchema()
         {
             return null;
@@ -33,12 +42,15 @@ namespace t2.Library.SerializationModels
 
         public void ReadXml(XmlReader reader)
         {
+            if (reader == null)
+                throw new ArgumentNullException(nameof(reader));
+
             reader.MoveToContent();
             reader.ReadStartElement();
             {
                 Title = reader.ReadElementContentAsString();
                 PublicationData = DateOnly.ParseExact(reader.ReadElementContentAsString(), DateStringFormat);
-                reader.ReadStartElement("Authors");
+                reader.ReadStartElement(nameof(Authors));
                 {
                     while (reader.NodeType != XmlNodeType.EndElement)
                     {
@@ -54,6 +66,9 @@ namespace t2.Library.SerializationModels
 
         public void WriteXml(XmlWriter writer)
         {
+            if (writer == null)
+                throw new ArgumentNullException(nameof(writer));
+
             writer.WriteElementString(nameof(Title), Title);
             
             if (PublicationData.HasValue)

@@ -1,6 +1,4 @@
-﻿using t2.Library.SerializationModels;
-
-namespace t2.Library
+﻿namespace t2.Library
 {
     public class Author
     {
@@ -26,8 +24,6 @@ namespace t2.Library
             LastName = lastName;
             BirthDate = birthDate;
         }
-
-        public Author(AuthorSerializationModel authorSM) : this(authorSM.FirstName, authorSM.LastName, authorSM.BirthDate) { }
 
         public override bool Equals(object? obj)
         {

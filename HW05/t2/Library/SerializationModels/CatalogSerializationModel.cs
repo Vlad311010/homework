@@ -23,6 +23,22 @@ namespace t2.Library.SerializationModels
             );
         }
 
+        public Catalog AsCatalog()
+        {
+            Catalog catalog = new Catalog();
+            foreach (var entry in Entries)
+            {
+                catalog[entry.Key] = new Book(
+                        entry.Value.Title, 
+                        entry.Value.PublicationData, 
+                        entry.Value.Authors.Select(authorSM => authorSM.AsAuthor())
+                    );
+            }
+            
+            return catalog;
+        }
+
+
         public XmlSchema? GetSchema()
         {
             return null;
@@ -30,6 +46,9 @@ namespace t2.Library.SerializationModels
 
         public void ReadXml(XmlReader reader)
         {
+            if (reader == null)
+                throw new ArgumentNullException(nameof(reader));
+
             reader.MoveToContent();
             reader.ReadStartElement("Catalog");
             {
@@ -51,6 +70,9 @@ namespace t2.Library.SerializationModels
 
         public void WriteXml(XmlWriter writer)
         {
+            if (writer == null)
+                throw new ArgumentNullException(nameof(writer));
+
             foreach (var keyValue in Entries)
             {
                 writer.WriteStartElement(CatalogEntryElementName);

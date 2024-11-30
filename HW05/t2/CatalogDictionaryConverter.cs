@@ -44,7 +44,7 @@ namespace t2
             foreach (var kvp in value)
             {
                 // Write key
-                writer.WritePropertyName(kvp.Key);
+                writer.WritePropertyName((string)kvp.Key);
                 // Write value (Book)
                 JsonSerializer.Serialize(writer, kvp.Value, options);
             }
