@@ -109,17 +109,5 @@ namespace t2_tests
             Book[] books = _catalog.WrittenBy(_author01).ToArray();
             CollectionAssert.AreEquivalent(books, expectedBooks, $"Collections {nameof(expectedBooks)} and {nameof(books)} are not equivalent");
         }
-
-        [TestMethod]
-        public void AuthorBooksList()
-        {
-            var expectedBooks = new Book[] { _book01 };
-            var authorBooks = _catalog.GetAuthorBooks().ToArray();
-            
-        }
-        
-
-
-
     }
 }
