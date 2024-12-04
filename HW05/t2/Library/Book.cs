@@ -43,5 +43,11 @@
             }
             return hash;
         }
+
+        public override string ToString()
+        {
+            return $"{Title}";
+            // return $"{Title} - {string.Join(',', Authors.Select(a => a.ToString()))}";
+        }
     }
 }

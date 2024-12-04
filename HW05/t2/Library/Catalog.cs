@@ -3,11 +3,11 @@
     public class Catalog
     {
         public int Count => _catalog.Count;
-        public IReadOnlyDictionary<ISBN13, Book> Entries => _catalog;
+        public IReadOnlyDictionary<string, Book> Entries => _catalog;
 
-        public Dictionary<ISBN13, Book> _catalog = new Dictionary<ISBN13, Book>();
+        public Dictionary<string, Book> _catalog = new Dictionary<string, Book>();
 
-        public Book this[ISBN13 isbn]
+        public Book this[string isbn]
         {
             get
             {
@@ -36,11 +36,17 @@
                 .OrderBy(book => book.PublicationData);
         }
 
-        public IEnumerable<string> GetBooks()
+        public IEnumerable<string> GetBookTitles()
         {
             return Entries
                 .Select(keyValue => keyValue.Value.Title)
                 .OrderBy(title => title);
+        }
+
+        public IEnumerable<Book> GetBooks()
+        {
+            return Entries
+                .Select(keyValue => keyValue.Value);
         }
 
         public IEnumerable<(string, int)> GetAuthorBookCounts()
@@ -57,7 +63,7 @@
             if (other == null) 
                 return false;
 
-            foreach (ISBN13 isbn in Entries.Keys)
+            foreach (string isbn in Entries.Keys)
             {
                 if (!this[isbn].Equals(other[isbn]))
                 {

@@ -4,12 +4,12 @@
     {
         public string FirstName { get; private set; }
         public string LastName { get; private set; }
-        public DateOnly BirthDate { get; private set; }
+        public DateOnly? BirthDate { get; private set; }
         public string FullName => FirstName + LastName;
 
         private const int _nameMaxLength = 200;
 
-        public Author(string firstName, string lastName, DateOnly birthDate)
+        public Author(string firstName, string lastName, DateOnly? birthDate)
         {
             ArgumentException.ThrowIfNullOrWhiteSpace(firstName, nameof(firstName));
             ArgumentException.ThrowIfNullOrWhiteSpace(lastName, nameof(lastName));

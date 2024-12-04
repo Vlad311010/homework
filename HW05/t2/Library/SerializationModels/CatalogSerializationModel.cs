@@ -7,7 +7,7 @@ namespace t2.Library.SerializationModels
     [XmlRoot("Catalog")]
     public class CatalogSerializationModel : IXmlSerializable
     {
-        public Dictionary<ISBN13, BookSerializationModel> Entries { get; set; } = new Dictionary<ISBN13, BookSerializationModel>(); 
+        public Dictionary<string, BookSerializationModel> Entries { get; set; } = new Dictionary<string, BookSerializationModel>(); 
 
         private const string CatalogEntryElementName = "Entry";
         public CatalogSerializationModel() { }

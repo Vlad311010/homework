@@ -68,7 +68,7 @@ namespace t2_tests
         public void GetBooksCount()
         {
             int expectedBookCount = 3;
-            int bookCount = _catalog.GetBooks().Count();
+            int bookCount = _catalog.GetBookTitles().Count();
             Assert.AreEqual(bookCount, expectedBookCount, $"Expected value: {expectedBookCount}. Actual value: {bookCount}");
         }
 
@@ -76,7 +76,7 @@ namespace t2_tests
         public void GetBooks()
         {
             string[] expectedBooks = new string[3] { _book01.Title, _book02.Title, _book03.Title};
-            string[] books = _catalog.GetBooks().ToArray();
+            string[] books = _catalog.GetBookTitles().ToArray();
             CollectionAssert.AreEqual(books, expectedBooks);
         }
 

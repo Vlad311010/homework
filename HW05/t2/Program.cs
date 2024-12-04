@@ -8,6 +8,7 @@ namespace t2
     {
         static void Main(string[] args)
         {
+            /*
             Catalog catalog = new Catalog();
 
             // authors
@@ -41,6 +42,38 @@ namespace t2
             jsonRepositoty.Serialize(catalog);
             Catalog desJsonCatalog = jsonRepositoty.Deserialize();
             Console.WriteLine("Are equal: " + desJsonCatalog.Equals(catalog));
+            */
+
+            string libraryType = "ELibrary";
+            // Library.Library eLibrary = CreateLibrarty(libraryType);
+            libraryType = "PaperLibrary";
+            Library.Library paperLibrary = CreateLibrarty(libraryType);
+
+            foreach (var item in paperLibrary.Catalog.GetBooks())
+            {
+                Console.WriteLine(item);   
+            }
+            
+
+        }
+
+
+        public static Library.Library CreateLibrarty(string libraryType)
+        {
+            LibraryAbstractFactory libraryFactory = null;
+            switch (libraryType)
+            {
+                case "ELibrary":
+                    libraryFactory = new ELibraryFactory();
+                    break;
+                case "PaperLibrary":
+                    libraryFactory = new PaperLibraryFactory();
+                    break;
+                default:
+                    throw new ArgumentException($"Unknown library type ({libraryType})");
+            }
+
+            return libraryFactory.CreateLibrary();
         }
     }
 }
