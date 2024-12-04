@@ -16,8 +16,8 @@ namespace t2.Repositories
         }
 
 
-        readonly static string repositoryDataPath = @".\PersistentData\JsonCatalog\";
-        readonly static string fileNaming = "{0} books.json";
+        readonly static string _repositoryDataPath = @".\PersistentData\JsonCatalog\";
+        readonly static string _fileNaming = "{0} books.json";
 
         readonly static JsonSerializerOptions serializerOptions = new JsonSerializerOptions() 
         { 
@@ -26,13 +26,13 @@ namespace t2.Repositories
 
         public void Serialize(Catalog catalog)
         {
-            Directory.CreateDirectory(repositoryDataPath);
+            Directory.CreateDirectory(_repositoryDataPath);
 
             foreach (Author author in catalog.GetAuthors()) 
             {
                 var authorBooks = catalog.WrittenByWithISBN(author).ToArray();
 
-                string filePath = Path.Combine(repositoryDataPath, string.Format(fileNaming, author.FullName));
+                string filePath = Path.Combine(_repositoryDataPath, string.Format(_fileNaming, author.FullName));
 
                 var serializationData = new JsonSerializationType
                 {
@@ -52,10 +52,10 @@ namespace t2.Repositories
         {
             var serializationDataType = new { author = string.Empty, books = Array.Empty<string>() };
 
-            if (!Directory.Exists(repositoryDataPath))
+            if (!Directory.Exists(_repositoryDataPath))
                 throw new FileNotFoundException("No data to deserialize");
 
-            string[] files = Directory.GetFiles(repositoryDataPath, "*.json");
+            string[] files = Directory.GetFiles(_repositoryDataPath, "*.json");
 
             Catalog catalog = new Catalog();
             foreach (string file in files)
