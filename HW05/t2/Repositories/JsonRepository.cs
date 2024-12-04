@@ -6,36 +6,75 @@ namespace t2.Repositories
 {
     internal class JsonRepository : IRepository<Catalog>
     {
-        readonly static string repositoryDataPath = @".\PersistentData\catalog.json";
+        // json can't serialize tuples so i defined a record type
+        private record BookData(BookSerializationModel Book, string ISBN);
+
+        private class JsonSerializationType
+        {
+            public AuthorSerializationModel Author { get; set; }
+            public BookData[] Books { get; set; }
+        }
+
+
+        readonly static string repositoryDataPath = @".\PersistentData\JsonCatalog\";
+        readonly static string fileNaming = "{0} books.json";
 
         readonly static JsonSerializerOptions serializerOptions = new JsonSerializerOptions() 
         { 
             WriteIndented = true,
-            Converters = { new CatalogDictionaryConverter() } 
         };
 
         public void Serialize(Catalog catalog)
         {
-            CatalogSerializationModel catalogSM = new CatalogSerializationModel(catalog);
+            Directory.CreateDirectory(repositoryDataPath);
 
-            using (var writer = new StreamWriter(repositoryDataPath))
+            foreach (Author author in catalog.GetAuthors()) 
             {
-                string jsonCatalog = JsonSerializer.Serialize<CatalogSerializationModel>(catalogSM, serializerOptions);
-                writer.Write(jsonCatalog);                
+                var authorBooks = catalog.WrittenByWithISBN(author).ToArray();
+
+                string filePath = Path.Combine(repositoryDataPath, string.Format(fileNaming, author.FullName));
+
+                var serializationData = new JsonSerializationType
+                {
+                    Author = new AuthorSerializationModel(author),
+                    Books = authorBooks.Select(bookData => new BookData(new BookSerializationModel(bookData.Item1), (string)bookData.Item2)).ToArray()
+                };
+
+                using (var writer = new StreamWriter(filePath))
+                {
+                    string jsonCatalog = JsonSerializer.Serialize<JsonSerializationType>(serializationData, serializerOptions);
+                    writer.Write(jsonCatalog);
+                }
             }
         }
 
         public Catalog Deserialize()
         {
-            using (var reader = new StreamReader(repositoryDataPath))
-            {
-                string json = reader.ReadToEnd();
-                CatalogSerializationModel? catalogSM = JsonSerializer.Deserialize<CatalogSerializationModel>(json, serializerOptions);
-                if (catalogSM == null)
-                    throw new JsonException("Can't parse given json file");
+            var serializationDataType = new { author = string.Empty, books = Array.Empty<string>() };
 
-                return catalogSM.AsCatalog();
+            if (!Directory.Exists(repositoryDataPath))
+                throw new FileNotFoundException("No data to deserialize");
+
+            string[] files = Directory.GetFiles(repositoryDataPath, "*.json");
+
+            Catalog catalog = new Catalog();
+            foreach (string file in files)
+            {
+                using (var reader = new StreamReader(file))
+                {
+                    string json = reader.ReadToEnd();
+                    JsonSerializationType? result = JsonSerializer.Deserialize<JsonSerializationType>(json, options: serializerOptions);
+                    if (result == null)
+                        throw new JsonException($"Can't parse given json file. {file}");
+
+                    foreach (BookData BookData in result.Books)
+                    {
+                        catalog[BookData.ISBN] = BookData.Book.AsBook();
+                    }
+                }
             }
+            
+            return catalog;
         }
     }
 }
