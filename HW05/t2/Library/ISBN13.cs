@@ -1,12 +1,12 @@
 ﻿using System.Text.RegularExpressions;
 
-namespace t2
+namespace t2.Library
 {
     public readonly struct ISBN13
     {
         public readonly string ISBN;
 
-        public ISBN13(string isbn) 
+        public ISBN13(string isbn)
         {
             if (isbn == null)
                 throw new ArgumentNullException(nameof(isbn));
@@ -14,7 +14,7 @@ namespace t2
             if (!IsValidISBNFormat(isbn))
                 throw new ArgumentException($"Invaldi ISNB code format {isbn}");
 
-            ISBN = SimplifyISBN(isbn);    
+            ISBN = SimplifyISBN(isbn);
         }
 
         private bool IsValidISBNFormat(string isbn)
