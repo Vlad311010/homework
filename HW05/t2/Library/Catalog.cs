@@ -28,15 +28,16 @@
                 .OrderBy(book => book.PublicationData);
         }
 
-        public IEnumerable<Book> WrittenBy(string authorFullName)
+        public IEnumerable<(Book, ISBN13)> WrittenByWithISBN(Author author)
         {
             return Entries
-                .Select(keyValue => keyValue.Value)
-                .Where(book => book.Authors.Any(author => author.FullName == authorFullName))
-                .OrderBy(book => book.PublicationData);
+                .Select(keyValue => (keyValue.Value, keyValue.Key))
+                .Where(bookISBNPair => bookISBNPair.Value.Authors.Any(a => a.Equals(author)))
+                .OrderBy(bookISBNPair => bookISBNPair.Value.PublicationData);
         }
 
-        public IEnumerable<string> GetBookTitles()
+
+        public IEnumerable<string> GetBooks()
         {
             return Entries
                 .Select(keyValue => keyValue.Value.Title)
@@ -57,6 +58,13 @@
                 .Select(group => (group.Key.FullName, group.Count()));
         }
 
+        public IEnumerable<Author> GetAuthors()
+        {
+            return Entries
+                .SelectMany(keyValue => keyValue.Value.Authors);
+        }
+
+        
         public override bool Equals(object? obj)
         {
             Catalog? other = obj as Catalog;

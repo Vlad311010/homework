@@ -27,11 +27,13 @@ namespace t2
                 "Good Omens: The Nice and Accurate Prophecies of Agnes Nutter, Witch",
                 new DateOnly(1990, 1, 1), new Author[] { author05, author06 }
             );
+            var book05 = new Book("BAKEMONOGATARI, Part 2", new DateOnly(2017, 02, 28), new Author[] { author04 });
 
             catalog["9781937007683"] = book01;
             catalog["9780026151702"] = book02;
             catalog["9781942993889"] = book03;
             catalog["9780575048003"] = book04;
+            catalog["9781942993896"] = book05;
 
             XMLRepository xmlRepositoty = new XMLRepository();
             xmlRepositoty.Serialize(catalog);
