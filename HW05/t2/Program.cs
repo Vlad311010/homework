@@ -51,11 +51,11 @@ namespace t2
             libraryType = "PaperLibrary";
             Library.Library paperLibrary = CreateLibrarty(libraryType);
 
+            int i = 1;
             foreach (var item in paperLibrary.Catalog.GetBooks())
             {
-                Console.WriteLine(item);   
+                Console.WriteLine(i++ + ": " + item);
             }
-            
 
         }
 

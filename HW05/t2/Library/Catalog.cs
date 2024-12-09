@@ -24,20 +24,18 @@
         {
             return Entries
                 .Select(keyValue => keyValue.Value)
-                .Where(book => book.Authors.Any(a => a.Equals(author)))
-                .OrderBy(book => book.PublicationData);
+                .Where(book => book.Authors.Any(a => a.Equals(author)));
         }
 
-        public IEnumerable<(Book, ISBN13)> WrittenByWithISBN(Author author)
+        public IEnumerable<(Book, string)> WrittenByWithISBN(Author author)
         {
             return Entries
                 .Select(keyValue => (keyValue.Value, keyValue.Key))
-                .Where(bookISBNPair => bookISBNPair.Value.Authors.Any(a => a.Equals(author)))
-                .OrderBy(bookISBNPair => bookISBNPair.Value.PublicationData);
+                .Where(bookISBNPair => bookISBNPair.Value.Authors.Any(a => a.Equals(author)));
         }
 
 
-        public IEnumerable<string> GetBooks()
+        public IEnumerable<string> GetBookTitles()
         {
             return Entries
                 .Select(keyValue => keyValue.Value.Title)
@@ -46,8 +44,7 @@
 
         public IEnumerable<Book> GetBooks()
         {
-            return Entries
-                .Select(keyValue => keyValue.Value);
+            return Entries.Values;
         }
 
         public IEnumerable<(string, int)> GetAuthorBookCounts()

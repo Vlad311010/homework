@@ -2,13 +2,15 @@
 {
     internal class EBook : Book
     {
-        public Uri BookSource { get; private set; }
-        public IReadOnlyCollection<EBookFormat> AvailableFormats => _formats;
-        public EBookFormat[] _formats { get; private set; }
+        public IReadOnlyCollection<string> BookSource => _sources;
+        public IReadOnlyCollection<string> AvailableFormats => _formats;
+        
+        string[] _formats;
+        string[] _sources;
 
-        public EBook(string title, DateOnly? publicationDate, Uri url, IEnumerable<EBookFormat> formats, IEnumerable<Author> authors) : base(title, publicationDate, authors)
+        public EBook(string title, IEnumerable<string> sources, IEnumerable<string> formats, IEnumerable<Author> authors) : base(title, authors)
         {
-            BookSource = url;
+            _sources = sources.ToArray();
             _formats = formats.ToArray();
         }
     }

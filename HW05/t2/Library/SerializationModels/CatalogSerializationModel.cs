@@ -30,7 +30,6 @@ namespace t2.Library.SerializationModels
             {
                 catalog[entry.Key] = new Book(
                         entry.Value.Title, 
-                        entry.Value.PublicationData, 
                         entry.Value.Authors.Select(authorSM => authorSM.AsAuthor())
                     );
             }

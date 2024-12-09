@@ -1,67 +1,92 @@
-﻿
+﻿using Csv;
+using System.Text.RegularExpressions;
+
 namespace t2.Library
 {
     internal class PaperLibraryFactory : LibraryAbstractFactory
     {
-        readonly string defaultCsvSource = @".\PersistentData\books_info.csv";
         // csv confing
-        string authorColumnName = "creator";
-        string publicationDateColumnName = "publicdate";
-        string publisherColumnName = "publisher";
-        string isbnsColumnName = "related-external-id";
-        string titleColumnName = "identifier";
+        private const string AuthorColumnName = "creator";
+        private const string PublicationDateColumnName = "publicdate";
+        private const string PublisherColumnName = "publisher";
+        private const string IdentifiersColumnName = "related-external-id";
+        private const string TitleColumnName = "title";
 
-        public override Library CreateLibrary()
-        {
-            Catalog catalog = ReadSource();
-
-
-            return new Library(catalog);
-        }
-
-        private Catalog ReadSource()
+        protected override Catalog ReadSource()
         {
             Catalog catalog = new Catalog();
-            using (StreamReader reader = new StreamReader(defaultCsvSource))
+            List<(int Line, string ErrorInfo, string Content)> unparsedDataInfo = new();
+            using (StreamReader reader = new StreamReader(DefaultCsvSource))
             {
-                string[] headers = reader.ReadLine().Split(','); // read headers
+                int lineNumber = 1; // CsvReader.Read skips header so I start indexing from second line of csv
+                IEnumerable<ICsvLine> lines = CsvReader.Read(reader, _readerOptions); // using external library https://github.com/stevehansen/csv/ for parsing csv parsing
 
-                int authorColumnIdx = Array.IndexOf(headers, authorColumnName);
-                int publicationDateIdx = Array.IndexOf(headers, publicationDateColumnName);
-                int publisherIdx = Array.IndexOf(headers, publisherColumnName);
-                int isnbsIdx = Array.IndexOf(headers, isbnsColumnName);
-                int titleIdx =  Array.IndexOf(headers, titleColumnName);
-
-                string line;
-                while ((line = reader.ReadLine()!) != null)
+                foreach (var line in lines)
                 {
-                    string[] values = line.Split(',');
-                    Author[] authors = ParseAuthors(values[authorColumnIdx]);
-                    DateOnly date = ParseDate(values[publicationDateIdx]);
-                    string publisher = values[publisherIdx];
-                    string[] isbns = ParseIsbns(values[isnbsIdx]);
-                    string title = values[titleIdx];
+                    lineNumber++;
+
+                    Author[] authors = ParseAuthors(line[AuthorColumnName]);
+                    DateOnly? date = ParsePublicationDate(line[PublicationDateColumnName]);
+                    string publisher = line[PublisherColumnName];
+                    string[] isbns = ParseIsbns(line[IdentifiersColumnName]);
+                    string title = line[TitleColumnName];
+
+
+                    if (authors.Length == 0)
+                    {
+                        AddWarning(unparsedDataInfo, lineNumber, line.Raw, $"Can't parse {AuthorColumnName}");
+                        continue;
+                    }
+
+                    if (isbns.Length == 0)
+                    {
+                        AddWarning(unparsedDataInfo, lineNumber, line.Raw, "Missing ISBN code");
+                        continue;
+                    }
+
+                    if (string.IsNullOrEmpty(title))
+                    {
+                        AddWarning(unparsedDataInfo, lineNumber, line.Raw, "Missing book title");
+                        continue;
+                    }
+
                     PaperBook book = new PaperBook(title, date, isbns, publisher, authors);
                     catalog[isbns[0]] = book;
                 }
+                
             }
             
             return catalog;
         }
 
-        private string[] ParseIsbns(string isbns)
+        private void AddWarning(List<(int Line, string Content, string ErrorInfo)> unparsedDataList, int line, string content, string errorInfo)
         {
-            return isbns.Split(",");
+            unparsedDataList.Add((line, errorInfo, content));
         }
 
-        private DateOnly ParseDate(string v)
+        private string[] ParseIsbns(string identifiers)
         {
-            return DateOnly.FromDateTime(DateTime.Now);
+            List<string> isbns = new List<string>();
+            string regex = @"^urn:isbn:(\d+)";
+            foreach (string identifier in identifiers.Split(","))
+            {
+                var match = Regex.Match(identifier, regex);
+                if (match.Success)
+                {
+                    isbns.Add(match.Groups[1].Value);
+                }
+            }
+
+            return isbns.ToArray();
         }
 
-        private Author[] ParseAuthors(string authors)
+        private DateOnly? ParsePublicationDate(string dateTimeString)
         {
-            return new Author[authors.Length];
+            DateTime dateTime;
+            if (DateTime.TryParse(dateTimeString, out dateTime))
+                return DateOnly.FromDateTime(dateTime);
+
+            return null;
         }
     }
 }
