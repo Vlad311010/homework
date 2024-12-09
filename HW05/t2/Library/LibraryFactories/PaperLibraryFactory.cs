@@ -1,7 +1,8 @@
 ﻿using Csv;
 using System.Text.RegularExpressions;
+using t2.Library.Books;
 
-namespace t2.Library
+namespace t2.Library.LibraryFactory
 {
     internal class PaperLibraryFactory : LibraryAbstractFactory
     {
@@ -53,9 +54,9 @@ namespace t2.Library
                     PaperBook book = new PaperBook(title, date, isbns, publisher, authors);
                     catalog[isbns[0]] = book;
                 }
-                
+
             }
-            
+
             return catalog;
         }
 

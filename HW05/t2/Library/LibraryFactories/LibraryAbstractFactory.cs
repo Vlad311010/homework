@@ -1,7 +1,7 @@
 ﻿using Csv;
 using System.Text.RegularExpressions;
 
-namespace t2.Library
+namespace t2.Library.LibraryFactory
 {
     internal abstract class LibraryAbstractFactory
     {
@@ -30,7 +30,7 @@ namespace t2.Library
             string regex = @"([a-zA-Z.]+)[,.] *([a-zA-Z.]+)(, Sir)?([,.] *(\d+))?";
             string alternativeRegex = @"([a-zA-Z]+) ([a-zA-Z]+)"; // alternative regex for parsing entiries like "Laura Godwin"
             List<Author> authorList = new List<Author>();
-            
+
             var matches = Regex.Matches(authors, regex);
             if (matches.Count == 0)
                 matches = Regex.Matches(authors, alternativeRegex);

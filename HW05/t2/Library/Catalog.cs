@@ -1,4 +1,6 @@
-﻿namespace t2.Library
+﻿using t2.Library.Books;
+
+namespace t2.Library
 {
     public class Catalog
     {

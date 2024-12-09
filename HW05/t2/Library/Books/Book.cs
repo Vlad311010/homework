@@ -1,4 +1,4 @@
-﻿namespace t2.Library
+﻿namespace t2.Library.Books
 {
     public class Book
     {
@@ -25,7 +25,7 @@
         public override bool Equals(object? obj)
         {
             return obj is Book other
-                && Title == other.Title                
+                && Title == other.Title
                 && _authors.SetEquals(other._authors);
         }
 

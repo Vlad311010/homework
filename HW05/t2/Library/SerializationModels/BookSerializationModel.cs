@@ -1,6 +1,7 @@
 ﻿using System.Xml.Serialization;
 using System.Xml;
 using System.Xml.Schema;
+using t2.Library.Books;
 
 namespace t2.Library.SerializationModels
 {

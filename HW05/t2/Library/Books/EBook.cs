@@ -1,10 +1,10 @@
-﻿namespace t2.Library
+﻿namespace t2.Library.Books
 {
     internal class EBook : Book
     {
         public IReadOnlyCollection<string> BookSource => _sources;
         public IReadOnlyCollection<string> AvailableFormats => _formats;
-        
+
         string[] _formats;
         string[] _sources;
 
