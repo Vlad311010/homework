@@ -17,8 +17,12 @@ namespace t2.LibraryModels.LibraryFactory
                 catalog[isbnKey] = book;
             }
 
-            return new Library(catalog);
+            return new Library(catalog, GetPressReliseItems(books));
         }
-
+        
+        public override IEnumerable<string> GetPressReliseItems(IEnumerable<Book> books)
+        {
+            return books.Select(book => ((PaperBook)book).Publisher).Distinct();
+        }
     }
 }

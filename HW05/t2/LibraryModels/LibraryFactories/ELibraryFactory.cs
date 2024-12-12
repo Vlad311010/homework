@@ -7,7 +7,7 @@ namespace t2.LibraryModels.LibraryFactory
     {
         public override Library CreateLibrary(string dataSourceFile)
         {
-            BookCsvParser csvParser = new BookCsvParser(new PaperBookParsingStrategy());
+            BookCsvParser csvParser = new BookCsvParser(new EBookParsingStrategy());
             IEnumerable<Book> books = csvParser.ReadCsv(dataSourceFile);
             Catalog catalog = new Catalog();
 
@@ -17,7 +17,12 @@ namespace t2.LibraryModels.LibraryFactory
                 catalog[sourceKey] = book;
             }
 
-            return new Library(catalog);
+            return new Library(catalog, GetPressReliseItems(books));
+        }
+
+        public override IEnumerable<string> GetPressReliseItems(IEnumerable<Book> books)
+        {
+            return books.SelectMany(book => ((EBook)book).AvailableFormats).Distinct();
         }
     }
 }

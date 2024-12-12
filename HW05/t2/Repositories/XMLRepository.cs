@@ -8,8 +8,14 @@ namespace t2.Serializers
 {
     internal class XMLRepository : IRepository<Catalog>
     {
-        private static readonly string _repositoryDataPath = @".\PersistentData\catalog.xml";
+        private readonly string _repositoryDataPath = @".\PersistentData\{0}catalog.xml";
         private static readonly XmlSerializer _serializer = new XmlSerializer(typeof(CatalogSerializationModel));
+
+        public XMLRepository(string catalogType = "") 
+        {
+            string dataPath = string.IsNullOrWhiteSpace(catalogType) ? "" : catalogType + "_";
+            _repositoryDataPath = string.Format(_repositoryDataPath, dataPath);
+        }
 
         public void Serialize(Catalog catalog)
         {

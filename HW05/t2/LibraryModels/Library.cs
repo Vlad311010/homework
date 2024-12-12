@@ -3,17 +3,17 @@
     internal class Library
     {
         public Catalog Catalog { get; private set; }
-        public IReadOnlyList<string> PressReleaseItems => _pressReleaseItems;
+        public IReadOnlyCollection<string> PressReleaseItems => _pressReleaseItems;
 
-        private List<string> _pressReleaseItems = new List<string>();
-        // private Catalog _catalog;
+        private string[] _pressReleaseItems;
 
-        public Library(Catalog catalog)
+        public Library(Catalog catalog, IEnumerable<string> pressReleaseItems)
         {
             ArgumentNullException.ThrowIfNull(catalog, nameof(catalog));
-            
+            ArgumentNullException.ThrowIfNull(pressReleaseItems, nameof(pressReleaseItems));
+
             Catalog = catalog;
-            // TODO: set _pressReleaseItems
+            _pressReleaseItems = pressReleaseItems.ToArray();
         }
     }
 }

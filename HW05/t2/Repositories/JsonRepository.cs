@@ -16,13 +16,19 @@ namespace t2.Repositories
         }
 
 
-        readonly static string _repositoryDataPath = @".\PersistentData\JsonCatalog\";
+        readonly string _repositoryDataPath = @".\PersistentData\JsonCatalog\{0}\";
         readonly static string _fileNaming = "{0} books.json";
 
         readonly static JsonSerializerOptions serializerOptions = new JsonSerializerOptions() 
         { 
             WriteIndented = true,
         };
+
+        public JsonRepository(string catalogType = "General")
+        {
+            string dataPath = string.IsNullOrWhiteSpace(catalogType) ? "General" : catalogType;
+            _repositoryDataPath = string.Format(_repositoryDataPath, dataPath);
+        }
 
         public void Serialize(Catalog catalog)
         {

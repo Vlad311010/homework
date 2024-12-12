@@ -76,7 +76,7 @@ namespace t2.LibraryModels.SerializationModels
             foreach (var keyValue in Entries)
             {
                 writer.WriteStartElement(CatalogEntryElementName);
-                writer.WriteElementString("ISBN", (string)keyValue.Key);
+                writer.WriteElementString("Identifier", (string)keyValue.Key);
 
                 writer.WriteStartElement("Book");
                 keyValue.Value.WriteXml(writer);
