@@ -1,4 +1,4 @@
-﻿namespace t2.Library
+﻿namespace t2.LibraryModels
 {
     public class Author
     {

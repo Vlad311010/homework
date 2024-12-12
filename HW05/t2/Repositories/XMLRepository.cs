@@ -1,7 +1,7 @@
 ﻿using System.Xml;
 using System.Xml.Serialization;
-using t2.Library;
-using t2.Library.SerializationModels;
+using t2.LibraryModels;
+using t2.LibraryModels.SerializationModels;
 using t2.Repositories;
 
 namespace t2.Serializers

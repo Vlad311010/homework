@@ -1,5 +1,5 @@
-﻿using t2.Library;
-using t2.Library.LibraryFactory;
+﻿using t2.LibraryModels;
+using t2.LibraryModels.LibraryFactory;
 using t2.Repositories;
 using t2.Serializers;
 
@@ -50,7 +50,7 @@ namespace t2
             string libraryType = "ELibrary";
             // Library.Library eLibrary = CreateLibrarty(libraryType);
             libraryType = "PaperLibrary";
-            Library.Library paperLibrary = CreateLibrarty(libraryType);
+            Library paperLibrary = CreateLibrarty(libraryType);
 
             int i = 1;
             foreach (var item in paperLibrary.Catalog.GetBooks())
@@ -61,8 +61,9 @@ namespace t2
         }
 
 
-        public static Library.Library CreateLibrarty(string libraryType)
+        public static Library CreateLibrarty(string libraryType)
         {
+            string csvFile = "./PersistentData/books_info.csv";
             LibraryAbstractFactory libraryFactory = null;
             switch (libraryType)
             {
@@ -76,7 +77,7 @@ namespace t2
                     throw new ArgumentException($"Unknown library type ({libraryType})");
             }
 
-            return libraryFactory.CreateLibrary();
+            return libraryFactory.CreateLibrary(csvFile);
         }
     }
 }

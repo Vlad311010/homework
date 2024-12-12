@@ -1,9 +1,9 @@
 ﻿using System.Xml.Serialization;
 using System.Xml;
 using System.Xml.Schema;
-using t2.Library.Books;
+using t2.LibraryModels.Books;
 
-namespace t2.Library.SerializationModels
+namespace t2.LibraryModels.SerializationModels
 {
     [XmlRoot("Book")]
     public class BookSerializationModel : IXmlSerializable

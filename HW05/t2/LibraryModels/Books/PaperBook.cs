@@ -1,4 +1,4 @@
-﻿namespace t2.Library.Books
+﻿namespace t2.LibraryModels.Books
 {
     internal class PaperBook : Book
     {

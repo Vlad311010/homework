@@ -1,5 +1,5 @@
-﻿using t2.Library.SerializationModels;
-using t2.Library;
+﻿using t2.LibraryModels.SerializationModels;
+using t2.LibraryModels;
 using System.Text.Json;
 
 namespace t2.Repositories

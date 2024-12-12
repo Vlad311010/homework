@@ -1,4 +1,4 @@
-﻿namespace t2.Library.Books
+﻿namespace t2.LibraryModels.Books
 {
     public class Book
     {
@@ -9,7 +9,8 @@
 
         public Book(string title, IEnumerable<Author> authors)
         {
-            ArgumentException.ThrowIfNullOrWhiteSpace(title, nameof(title));
+            ArgumentNullException.ThrowIfNullOrWhiteSpace(title, nameof(title));
+            ArgumentNullException.ThrowIfNull(authors, nameof(authors));
 
             Title = title;
 

@@ -1,5 +1,5 @@
-using t2.Library;
-using t2.Library.Books;
+using t2.LibraryModels;
+using t2.LibraryModels.Books;
 
 namespace t2_tests
 {
