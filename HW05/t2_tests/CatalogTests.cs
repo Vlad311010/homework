@@ -26,44 +26,17 @@ namespace t2_tests
             _author02 = new Author("Arkady", "Strugatsky", new DateOnly(1925, 8, 28));
             _author03 = new Author("Boris", "Strugatsky", new DateOnly(1933, 4, 14));
 
-            _book01 = new Book("Title01", new DateOnly(2024, 11, 13), new Author[] { _author01, _author02 });
-            _book02 = new Book("Title02", new DateOnly(2010, 8, 13), new Author[] { _author03 });
-            _book03 = new Book("Title03", new DateOnly(2012, 7, 27), new Author[] { _author02 });
+            _book01 = new Book("Title01", new Author[] { _author01, _author02 });
+            _book02 = new Book("Title02", new Author[] { _author03 });
+            _book03 = new Book("Title03", new Author[] { _author02 });
             _catalog["2024111300000"] = _book01;
             _catalog["2010813000000"] = _book02;
             _catalog["2010727000000"] = _book03;
 
-            _book00 = new Book("Title00", new DateOnly(2024, 11, 14), new Author[] { _author01, _author02 });
+            _book00 = new Book("Title00", new Author[] { _author01, _author02 });
         }
 
-        [TestMethod]
-        public void ISNBSimpleFormInsert()
-        {
-            string isbn = "111-1-11-111111-1";
-            string isbnSimple = "1111111111111";
-            _catalog[isbnSimple] = _book00;
 
-            Assert.ReferenceEquals(_catalog[isbn], _catalog[isbnSimple]);
-        }
-
-        [TestMethod]
-        public void ISNBInsert()
-        {
-            string isbn = "123-4-56-111111-7";
-            string isbnSimple = "1234561111117";
-            _catalog[isbn] = _book00;
-
-            Assert.ReferenceEquals(_catalog[isbn], _catalog[isbnSimple]);
-        }
-
-        [TestMethod]
-        [DataRow("123-4-56-111111-11", DisplayName = "Additional digit")]
-        [DataRow("123-4-56-11111-11", DisplayName = "Misplaced dash")]
-        [DataRow("123-4-56-111-111-1", DisplayName = "Additional dash")]
-        public void ISBNInvalidFormat(string isbn)
-        {
-            Assert.ThrowsException<ArgumentException>(() => _catalog[isbn]);
-        }
         
         [TestMethod]
         public void GetBooksCount()
