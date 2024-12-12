@@ -8,6 +8,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Csv" Version="2.0.93" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Update="PersistentData\*\**">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
