@@ -1,4 +1,5 @@
 ﻿using t2.LibraryModels;
+using t2.LibraryModels.Books;
 using t2.LibraryModels.LibraryFactory;
 using t2.Repositories;
 using t2.Serializers;
@@ -7,12 +8,17 @@ namespace t2
 {
     internal class Program
     {
-        static void Main(string[] args)
+        static async Task Main(string[] args)
         {
             string libraryType = "ELibrary";
             Library eLibrary = CreateLibrarty(libraryType);
             libraryType = "PaperLibrary";
             Library paperLibrary = CreateLibrarty(libraryType);
+
+            /*foreach (EBook book in eLibrary.Catalog.GetBooks())
+            {
+                Console.WriteLine(book.Title + ": " + await book.Pages);
+            }*/
 
             IRepository<Catalog> paperRepositoty = new XMLRepository("paper");
             IRepository<Catalog> eRepositoty = new XMLRepository("e");
