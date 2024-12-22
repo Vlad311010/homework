@@ -1,4 +1,5 @@
-﻿using t2.LibraryModels.SerializationModels;
+
+using t2.LibraryModels.SerializationModels;
 using t2.LibraryModels;
 using System.Text.Json;
 
@@ -14,7 +15,6 @@ namespace t2.Repositories
             public AuthorSerializationModel Author { get; set; }
             public BookData[] Books { get; set; }
         }
-
 
         readonly string _repositoryDataPath = @".\PersistentData\JsonCatalog\{0}\";
         readonly static string _fileNaming = "{0} books.json";
