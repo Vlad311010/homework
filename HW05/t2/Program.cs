@@ -16,10 +16,7 @@ namespace t2
             libraryType = "PaperLibrary";
             Library paperLibrary = CreateLibrarty(libraryType);
 
-            /*foreach (EBook book in eLibrary.Catalog.GetBooks())
-            {
-                Console.WriteLine(book.Title + ": " + await book.Pages);
-            }*/
+            await eLibrary.InitializeBooksPageCount();
 
             IRepository<Catalog> paperRepositoty = new XMLRepository("paper");
             IRepository<Catalog> eRepositoty = new XMLRepository("e");

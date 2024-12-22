@@ -1,4 +1,6 @@
-﻿namespace t2.LibraryModels
+﻿using t2.LibraryModels.Books;
+
+namespace t2.LibraryModels
 {
     internal class Library
     {
@@ -14,6 +16,18 @@
 
             Catalog = catalog;
             _pressReleaseItems = pressReleaseItems.ToArray();
+        }
+
+        public async Task InitializeBooksPageCount()
+        {
+            foreach (Book book in Catalog.GetBooks())
+            {
+                EBook? eBook = book as EBook;
+                if (eBook == null)
+                    throw new ArgumentException("Invalid book type. Pages count can be initialize only for electronic book");
+
+                await eBook.Pages;
+            }
         }
     }
 }
