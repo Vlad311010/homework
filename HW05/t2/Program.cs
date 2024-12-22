@@ -31,20 +31,20 @@ namespace t2
         public static Library CreateLibrarty(string libraryType)
         {
             string csvFile = "./PersistentData/books_info.csv";
-            LibraryAbstractFactory libraryFactory = null!;
+            ILibraryFactory libraryFactory = null!;
             switch (libraryType)
             {
                 case "ELibrary":
-                    libraryFactory = new ELibraryFactory();
+                    libraryFactory = new ELibraryFactory(csvFile);
                     break;
                 case "PaperLibrary":
-                    libraryFactory = new PaperLibraryFactory();
+                    libraryFactory = new PaperLibraryFactory(csvFile);
                     break;
                 default:
                     throw new ArgumentException($"Unknown library type ({libraryType})");
             }
 
-            return libraryFactory.CreateLibrary(csvFile);
+            return libraryFactory.CreateLibrary();
         }
     }
 }

@@ -2,9 +2,9 @@
 
 namespace t2.LibraryModels.LibraryFactory
 {
-    internal abstract class LibraryAbstractFactory
+    internal abstract class ILibraryFactory
     {
-        public abstract Library CreateLibrary(string dataSourceFile);
+        public abstract Library CreateLibrary();
         public abstract IEnumerable<string> GetPressReliseItems(IEnumerable<Book> books);
 
     }

@@ -3,18 +3,16 @@ using t2.LibraryModels.Books;
 
 namespace t2.LibraryModels.CsvParser
 {
-    internal class EBookParsingStrategy : ICsvParsingStrategy
+    internal class EBookParsingStrategy : BookParsingBaseStrategy, ICsvParsingStrategy
     {
-        private const string AuthorColumnName = "creator";
-        private const string TitleColumnName = "title";
-        private const string FormatColumnName = "format";
         private const string InternetSourceColumnName = "identifier";
+        private const string FormatColumnName = "format";
 
         public bool TryParseCsvRow(ICsvLine line, int lineNumber, out Book? book, out UnparsedRowInfo? unparsedRowInfo)
         {
             bool parsingError = false;
             List<string> errors = new List<string>();
-            Author[] authors = BookCsvParser.ParseAuthors(line[AuthorColumnName]);
+            Author[] authors = ParseAuthors(line[AuthorColumnName]);
             string[] formats = line[FormatColumnName].Split(',');
             string source = line[InternetSourceColumnName];
             string title = line[TitleColumnName];
