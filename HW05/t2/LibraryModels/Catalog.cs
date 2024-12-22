@@ -1,13 +1,15 @@
-﻿namespace t2.Library
+﻿using t2.LibraryModels.Books;
+
+namespace t2.LibraryModels
 {
     public class Catalog
     {
         public int Count => _catalog.Count;
-        public IReadOnlyDictionary<ISBN13, Book> Entries => _catalog;
+        public IReadOnlyDictionary<string, Book> Entries => _catalog;
 
-        public Dictionary<ISBN13, Book> _catalog = new Dictionary<ISBN13, Book>();
+        public Dictionary<string, Book> _catalog = new Dictionary<string, Book>();
 
-        public Book this[ISBN13 isbn]
+        public Book this[string isbn]
         {
             get
             {
@@ -24,24 +26,27 @@
         {
             return Entries
                 .Select(keyValue => keyValue.Value)
-                .Where(book => book.Authors.Any(a => a.Equals(author)))
-                .OrderBy(book => book.PublicationData);
+                .Where(book => book.Authors.Any(a => a.Equals(author)));
         }
 
-        public IEnumerable<(Book, ISBN13)> WrittenByWithISBN(Author author)
+        public IEnumerable<(Book, string)> WrittenByWithISBN(Author author)
         {
             return Entries
                 .Select(keyValue => (keyValue.Value, keyValue.Key))
-                .Where(bookISBNPair => bookISBNPair.Value.Authors.Any(a => a.Equals(author)))
-                .OrderBy(bookISBNPair => bookISBNPair.Value.PublicationData);
+                .Where(bookISBNPair => bookISBNPair.Value.Authors.Any(a => a.Equals(author)));
         }
 
 
-        public IEnumerable<string> GetBooks()
+        public IEnumerable<string> GetBookTitles()
         {
             return Entries
                 .Select(keyValue => keyValue.Value.Title)
                 .OrderBy(title => title);
+        }
+
+        public IEnumerable<Book> GetBooks()
+        {
+            return Entries.Values;
         }
 
         public IEnumerable<(string, int)> GetAuthorBookCounts()
@@ -65,7 +70,7 @@
             if (other == null) 
                 return false;
 
-            foreach (ISBN13 isbn in Entries.Keys)
+            foreach (string isbn in Entries.Keys)
             {
                 if (!this[isbn].Equals(other[isbn]))
                 {

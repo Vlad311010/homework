@@ -2,14 +2,14 @@
 using System.Xml.Schema;
 using System.Xml.Serialization;
 
-namespace t2.Library.SerializationModels
+namespace t2.LibraryModels.SerializationModels
 {
     [XmlRoot("Author")]
     public class AuthorSerializationModel : IXmlSerializable
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }
-        public DateOnly BirthDate { get; set; }
+        public DateOnly? BirthDate { get; set; }
 
         private const string DateStringFormat = "yyyy.MM.dd";
 
@@ -46,7 +46,7 @@ namespace t2.Library.SerializationModels
                 FirstName = reader.ReadElementContentAsString();
                 LastName = reader.ReadElementContentAsString();
                 var dateValue = reader.ReadElementContentAsString();
-                BirthDate = DateOnly.ParseExact(dateValue, DateStringFormat);
+                BirthDate = string.IsNullOrEmpty(dateValue) ? null : DateOnly.ParseExact(dateValue, DateStringFormat);
             }
             reader.ReadEndElement();
         }
@@ -58,7 +58,7 @@ namespace t2.Library.SerializationModels
 
             writer.WriteElementString(nameof(FirstName), FirstName);
             writer.WriteElementString(nameof(LastName), LastName);
-            writer.WriteElementString(nameof(BirthDate), BirthDate.ToString(DateStringFormat));
+            writer.WriteElementString(nameof(BirthDate), BirthDate == null ? "" : BirthDate.Value.ToString(DateStringFormat));
         }
     }
 }

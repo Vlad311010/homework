@@ -1,14 +1,14 @@
 ﻿using System.Xml.Serialization;
 using System.Xml;
 using System.Xml.Schema;
+using t2.LibraryModels.Books;
 
-namespace t2.Library.SerializationModels
+namespace t2.LibraryModels.SerializationModels
 {
     [XmlRoot("Book")]
     public class BookSerializationModel : IXmlSerializable
     {
         public string Title { get; set; }
-        public DateOnly? PublicationData { get; set; }
         public List<AuthorSerializationModel> Authors { get; set; } = new List<AuthorSerializationModel>();
 
         private const string DateStringFormat = "yyyy.MM.dd";
@@ -22,7 +22,6 @@ namespace t2.Library.SerializationModels
                 throw new ArgumentNullException(nameof(book), "Book cannot be null.");
 
             Title = book.Title;
-            PublicationData = book.PublicationData;
             Authors = book.Authors.Select(a => new AuthorSerializationModel(a)).ToList();
         }
 
@@ -30,7 +29,6 @@ namespace t2.Library.SerializationModels
         {
             return new Book(
                 Title, 
-                PublicationData, 
                 Authors.Select(authorSM => authorSM.AsAuthor())
             );
         }
@@ -49,7 +47,6 @@ namespace t2.Library.SerializationModels
             reader.ReadStartElement();
             {
                 Title = reader.ReadElementContentAsString();
-                PublicationData = DateOnly.ParseExact(reader.ReadElementContentAsString(), DateStringFormat);
                 reader.ReadStartElement(nameof(Authors));
                 {
                     while (reader.NodeType != XmlNodeType.EndElement)
@@ -71,9 +68,6 @@ namespace t2.Library.SerializationModels
 
             writer.WriteElementString(nameof(Title), Title);
             
-            if (PublicationData.HasValue)
-                writer.WriteElementString(nameof(PublicationData), PublicationData.Value.ToString(DateStringFormat));
-
             writer.WriteStartElement(nameof(Authors));
             foreach (var author in Authors)
             {

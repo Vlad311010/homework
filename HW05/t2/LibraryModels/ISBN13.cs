@@ -1,6 +1,6 @@
 ﻿using System.Text.RegularExpressions;
 
-namespace t2.Library
+namespace t2.LibraryModels
 {
     public readonly struct ISBN13
     {

@@ -1,19 +1,18 @@
-﻿namespace t2.Library
+﻿namespace t2.LibraryModels.Books
 {
     public class Book
     {
         public string Title { get; private set; }
-        public DateOnly? PublicationData { get; private set; }
         public IReadOnlyCollection<Author> Authors => _authors;
 
         private HashSet<Author> _authors = new HashSet<Author>();
 
-        public Book(string title, DateOnly? publicationDate, IEnumerable<Author> authors)
+        public Book(string title, IEnumerable<Author> authors)
         {
-            ArgumentException.ThrowIfNullOrWhiteSpace(title, nameof(title));
+            ArgumentNullException.ThrowIfNullOrWhiteSpace(title, nameof(title));
+            ArgumentNullException.ThrowIfNull(authors, nameof(authors));
 
             Title = title;
-            PublicationData = publicationDate;
 
             if (authors == null)
                 return;
@@ -28,20 +27,23 @@
         {
             return obj is Book other
                 && Title == other.Title
-                && PublicationData == other.PublicationData
                 && _authors.SetEquals(other._authors);
         }
 
         public override int GetHashCode()
         {
             int hash = Title.GetHashCode();
-            hash = HashCode.Combine(hash, PublicationData?.GetHashCode() ?? 0);
 
             foreach (var author in _authors)
             {
                 hash = HashCode.Combine(hash, author.GetHashCode());
             }
             return hash;
+        }
+
+        public override string ToString()
+        {
+            return $"{Title} - {string.Join(", ", Authors.Select(a => a.FullName))}";
         }
     }
 }

@@ -1,13 +1,14 @@
 ﻿using System.Xml;
 using System.Xml.Schema;
 using System.Xml.Serialization;
+using t2.LibraryModels.Books;
 
-namespace t2.Library.SerializationModels
+namespace t2.LibraryModels.SerializationModels
 {
     [XmlRoot("Catalog")]
     public class CatalogSerializationModel : IXmlSerializable
     {
-        public Dictionary<ISBN13, BookSerializationModel> Entries { get; set; } = new Dictionary<ISBN13, BookSerializationModel>(); 
+        public Dictionary<string, BookSerializationModel> Entries { get; set; } = new Dictionary<string, BookSerializationModel>(); 
 
         private const string CatalogEntryElementName = "Entry";
         public CatalogSerializationModel() { }
@@ -30,7 +31,6 @@ namespace t2.Library.SerializationModels
             {
                 catalog[entry.Key] = new Book(
                         entry.Value.Title, 
-                        entry.Value.PublicationData, 
                         entry.Value.Authors.Select(authorSM => authorSM.AsAuthor())
                     );
             }
@@ -76,7 +76,7 @@ namespace t2.Library.SerializationModels
             foreach (var keyValue in Entries)
             {
                 writer.WriteStartElement(CatalogEntryElementName);
-                writer.WriteElementString("ISBN", (string)keyValue.Key);
+                writer.WriteElementString("Identifier", (string)keyValue.Key);
 
                 writer.WriteStartElement("Book");
                 keyValue.Value.WriteXml(writer);
