@@ -29,6 +29,7 @@ namespace t2_tests
             _book01 = new Book("Title01", new Author[] { _author01, _author02 });
             _book02 = new Book("Title02", new Author[] { _author03 });
             _book03 = new Book("Title03", new Author[] { _author02 });
+          
             _catalog["2024111300000"] = _book01;
             _catalog["2010813000000"] = _book02;
             _catalog["2010727000000"] = _book03;

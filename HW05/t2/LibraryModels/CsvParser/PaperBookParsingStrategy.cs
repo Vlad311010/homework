@@ -4,19 +4,15 @@ using t2.LibraryModels.Books;
 
 namespace t2.LibraryModels.CsvParser
 {
-    internal class PaperBookParsingStrategy : ICsvParsingStrategy
-    {
-        private const string AuthorColumnName = "creator";
-        private const string PublicationDateColumnName = "publicdate";
-        private const string PublisherColumnName = "publisher";
+    internal class PaperBookParsingStrategy : BookParsingBaseStrategy, ICsvParsingStrategy
+    {        
         private const string IdentifiersColumnName = "related-external-id";
-        private const string TitleColumnName = "title";
 
         public bool TryParseCsvRow(ICsvLine line, int lineNumber, out Book? book, out UnparsedRowInfo? unparsedRowInfo)
         {
             bool parsingError = false;
             List<string> errors = new List<string>();
-            Author[] authors = BookCsvParser.ParseAuthors(line[AuthorColumnName]);
+            Author[] authors = ParseAuthors(line[AuthorColumnName]);
             DateOnly? date = ParsePublicationDate(line[PublicationDateColumnName]);
             string publisher = line[PublisherColumnName];
             string[] isbns = ParseIsbns(line[IdentifiersColumnName]);
