@@ -20,14 +20,19 @@ namespace t2.LibraryModels
 
         public async Task InitializeBooksPageCount()
         {
-            foreach (Book book in Catalog.GetBooks())
+            IEnumerable<Book> books = Catalog.GetBooks();
+            Task[] tasks = new Task[books.Count()];
+            int taskIdx = 0;
+            foreach (Book book in books)
             {
                 EBook? eBook = book as EBook;
                 if (eBook == null)
                     throw new ArgumentException("Invalid book type. Pages count can be initialize only for electronic book");
 
-                await eBook.Pages;
+                tasks[taskIdx++] = eBook.Pages;
             }
+
+            await Task.WhenAll(tasks);
         }
     }
 }

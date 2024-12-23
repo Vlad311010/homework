@@ -9,7 +9,17 @@ namespace t2.LibraryModels.Books
 
         public static async Task<int?> FetchPagesCountData(string bookExternalIdentifier)
         {
-            string pageContent = await _httpClient.GetStringAsync(string.Format(InternetSourceTemplate, bookExternalIdentifier));
+
+            string pageContent;
+            try
+            {
+                pageContent = await _httpClient.GetStringAsync(string.Format(InternetSourceTemplate, bookExternalIdentifier));
+            }
+            catch (HttpIOException e) 
+            { 
+                return null;
+            }
+
             string regex = "itemprop=\"numberOfPages\">\\s*(\\d+)\\s*<\\/span>"; // decided to use regex instead of  parsisng whole html page
             var match = Regex.Match(pageContent, regex);
             if (match.Success && int.TryParse(match.Groups[1].Value, out int pages))
