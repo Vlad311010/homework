@@ -7,6 +7,16 @@ using t2.Serializers;
 
 namespace t2
 {
+    public struct S
+    {
+        public int x;
+        public int y;
+
+        public S()
+        {
+            x = 3;
+        }
+    }
     internal class Program
     {
         static async Task Main(string[] args)
@@ -16,7 +26,7 @@ namespace t2
             libraryType = "PaperLibrary";
             Library paperLibrary = CreateLibrarty(libraryType);
 
-            await eLibrary.InitializeBooksPageCount();
+            await BookExternalInfoAccesser.InitializeBooksPageCount(eLibrary.Catalog);
 
             IRepository<Catalog> paperRepositoty = new XMLRepository("paper");
             IRepository<Catalog> eRepositoty = new XMLRepository("e");

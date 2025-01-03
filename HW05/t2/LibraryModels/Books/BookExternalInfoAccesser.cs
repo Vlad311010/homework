@@ -9,7 +9,6 @@ namespace t2.LibraryModels.Books
 
         public static async Task<int?> FetchPagesCountData(string bookExternalIdentifier)
         {
-
             string pageContent;
             try
             {
@@ -26,6 +25,23 @@ namespace t2.LibraryModels.Books
                 return pages;
                 
             return null;
+        }
+
+        public static async Task InitializeBooksPageCount(Catalog eBookCatalog)
+        {
+            IEnumerable<Book> books = eBookCatalog.GetBooks();
+            Task[] tasks = new Task[books.Count()];
+            int taskIdx = 0;
+            foreach (Book book in books)
+            {
+                EBook? eBook = book as EBook;
+                if (eBook == null)
+                    throw new ArgumentException("Invalid book type. Pages count can be initialize only for electronic book");
+
+                tasks[taskIdx++] = eBook.Pages;
+            }
+
+            await Task.WhenAll(tasks);
         }
     }
 }
