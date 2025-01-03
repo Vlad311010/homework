@@ -1,4 +1,6 @@
-﻿namespace t2.LibraryModels
+﻿using t2.LibraryModels.Books;
+
+namespace t2.LibraryModels
 {
     internal class Library
     {

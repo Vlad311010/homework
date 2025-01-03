@@ -1,4 +1,5 @@
 using t2.LibraryModels;
+using t2.LibraryModels.Books;
 using t2.LibraryModels.LibraryFactory;
 
 using t2.Repositories;
@@ -6,14 +7,26 @@ using t2.Serializers;
 
 namespace t2
 {
+    public struct S
+    {
+        public int x;
+        public int y;
+
+        public S()
+        {
+            x = 3;
+        }
+    }
     internal class Program
     {
-        static void Main(string[] args)
+        static async Task Main(string[] args)
         {
             string libraryType = "ELibrary";
             Library eLibrary = CreateLibrarty(libraryType);
             libraryType = "PaperLibrary";
             Library paperLibrary = CreateLibrarty(libraryType);
+
+            await BookExternalInfoAccesser.InitializeBooksPageCount(eLibrary.Catalog);
 
             IRepository<Catalog> paperRepositoty = new XMLRepository("paper");
             IRepository<Catalog> eRepositoty = new XMLRepository("e");

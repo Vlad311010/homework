@@ -50,7 +50,7 @@ namespace t2.LibraryModels.CsvParser
             }
             else
             {
-                book = new EBook(title, source, formats, authors);
+                book = new EBook(title, source, formats!, authors);
                 unparsedRowInfo = null;
                 return true;
             }
